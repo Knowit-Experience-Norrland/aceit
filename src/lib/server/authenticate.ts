@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "$env/static/private";
 import bcrypt from "bcrypt";
-import { UserModel } from "./models";
 import { emailIsValid } from "$lib/validate";
-import { getUserDocumentByEmail, insertUser, userExists } from "./db";
+import { getUserDocumentByEmail, insertUser, userExists, UserModel } from "./db";
 
 import type { Cookies } from "@sveltejs/kit";
 

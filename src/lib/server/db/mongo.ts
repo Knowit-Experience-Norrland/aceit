@@ -1,16 +1,10 @@
 import { MONGO_URL, DATABASE_NAME } from '$env/static/private';
-import { MongoClient } from 'mongodb';
+import mongoose from "mongoose";
 
-const client = new MongoClient(MONGO_URL);
-
-export const connect = async (): Promise<void> => {
-  await client.connect();
+export const connect = async () => {
+  return await mongoose.connect(MONGO_URL, {dbName: DATABASE_NAME});
 }
 
 export const disconnect = async (): Promise<void> => {
-  await client.close();
-}
-
-export const getDB = () => {
-  return client.db(DATABASE_NAME);
+  await mongoose.disconnect();
 }
