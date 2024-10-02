@@ -21,7 +21,6 @@ export const authenticate = (cookies: Cookies): App.Claims | undefined => {
   if (!token) return undefined;
   try {
     const claims = jwt.verify(token, JWT_SECRET);
-    console.log(claims);
     if (!claims) return undefined;
     return claims as App.Claims;
   } catch {
@@ -81,28 +80,13 @@ export const register = async (
     return { error: nameError };
   }
 
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-  const user = new UserModel({
-    email,
-    password: hashedPassword,
-    firstName,
-    lastName
-  });
-
   try {
-    const { acknowledged, insertedId } = await insertUser(user);
+    const user = await insertUser({ email, password, firstName, lastName });
 
-    if (acknowledged && insertedId) {
-      return { token: jwt.sign({ id: insertedId.toHexString() }, JWT_SECRET) };
-    } else {
-      console.error("Could not insert user into database");
-      return { error: "Something went wrong. Please try again." };
-    }
+    return { token: jwt.sign({ id: user._id.toHexString() }, JWT_SECRET) };
   } catch (err) {
     console.error(err);
-    return { error: err?.toString() as string };
+    return { error: "Something went wrong. Please try again." };
   }
 }
 

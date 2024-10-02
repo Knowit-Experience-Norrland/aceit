@@ -1,7 +1,14 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
-	namespace App {
+
+  namespace Database {
+    interface User extends App.User {
+      password: string
+    }
+  }
+
+  namespace App {
     interface Claims {
       id: string
     }
@@ -11,14 +18,15 @@ declare global {
       firstName: string
       lastName: string
     }
-		// interface Error {}
-		interface Locals {
+
+    // interface Error {}
+    interface Locals {
       claims?: Claims
     }
-		// interface PageData {}
-		// interface PageState {}
-		// interface Platform {}
-	}
+    // interface PageData {}
+    // interface PageState {}
+    // interface Platform {}
+  }
 }
 
-export {};
+export { };

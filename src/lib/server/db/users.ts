@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { ObjectId } from 'mongodb';
 import { UserModel } from './models';
 
@@ -13,8 +14,18 @@ export const getUserDocumentByEmail = async (email: string) => {
   return await UserModel.collection.findOne({ email });
 }
 
-export const insertUser = async (user: any) => {
-  return await UserModel.collection.insertOne(user);
+export const insertUser = async (user: Database.User) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
+  user.password = hashedPassword;
+
+  const model = new UserModel(user);
+
+  await model.validate();
+  await model.save();
+
+  return model;
 }
 
 export const userExists = async (email: string) => {
