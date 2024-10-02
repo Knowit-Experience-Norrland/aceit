@@ -7,4 +7,4 @@ const UserSchema = new mongoose.Schema({
   lastName: { type: String, required: true }
 });
 
-export const UserModel = mongoose.models.users || mongoose.model("users", UserSchema);
+export const UserModel: mongoose.Model<App.User> = mongoose.models.users || mongoose.model("users", UserSchema);
