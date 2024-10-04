@@ -2,12 +2,25 @@ import bcrypt from 'bcrypt';
 import { ObjectId } from 'mongodb';
 import { UserModel } from './models';
 
+const options = {
+  projection: { password: 0 } // Do not return password
+}
+
 export const getUser = async (id: string) => {
-  const options = {
-    projection: { password: 0, _id: 0 } // NOTE: if we need _id in the application we must remove it from the projection and convert it to a string
+
+  const databaseUser = await UserModel.collection.findOne({ _id: new ObjectId(id) }, options) as Database.User | null;
+
+  if (!databaseUser) {
+    return null;
   }
 
-  return await UserModel.collection.findOne({ _id: new ObjectId(id) }, options) as App.User | null;
+  return convertToAppUser(databaseUser);
+}
+
+export const getUsers = async () => {
+  const databaseUsers = await UserModel.collection.find({}, options).toArray() as unknown as Database.User[];
+
+  return databaseUsers.map(convertToAppUser);
 }
 
 export const getUserDocumentByEmail = async (email: string) => {
@@ -32,4 +45,12 @@ export const userExists = async (email: string) => {
   const count = await UserModel.collection.countDocuments({ email });
 
   return count > 0;
+}
+
+const convertToAppUser = (user: Database.User): App.User => {
+  const { _id, ...rest } = user;
+  return {
+    id: _id?.toString() ?? "",
+    ...rest
+  }
 }
