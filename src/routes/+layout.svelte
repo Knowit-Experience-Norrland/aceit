@@ -3,28 +3,28 @@
 	import { writable } from 'svelte/store';
 
 	import type { LayoutServerData } from './$types';
-	import Modal from '$lib/components/modal.svelte';
 
 	export let data: LayoutServerData;
 
-	let show = false;
-
 	const user = writable<App.User | null>();
+
 	$: user.set(data.user);
 
 	setContext('user', user);
 </script>
 
 <header>
-	<div class="top-right">
-		<a href="/create-competition">Create Competition</a>
-		<div class="profile">
-			<span>{$user?.firstName}</span>
-			<form action="/logout" method="POST">
-				<button type="submit">Logout</button>
-			</form>
+	{#if $user}
+		<div class="top-right">
+			<a href="/create-competition">Create Competition</a>
+			<div class="profile">
+				<span>{$user?.firstName}</span>
+				<form action="/logout" method="POST">
+					<button type="submit">Logout</button>
+				</form>
+			</div>
 		</div>
-	</div>
+	{/if}
 </header>
 
 <main>
