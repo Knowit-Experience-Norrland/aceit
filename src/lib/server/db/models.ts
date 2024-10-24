@@ -1,6 +1,6 @@
 import mongoose, { Schema, Model } from "mongoose";
 
-const kindDiscriminator = { discriminatorKey: 'kind' };
+const discriminatorKey = 'kind';
 const golfDiscriminatorKey = 'golf';
 
 const UserSchema = new Schema({
@@ -11,35 +11,39 @@ const UserSchema = new Schema({
 });
 
 const UserMetaSchema = new Schema({
-  id: { type: Schema.Types.ObjectId, required: true },
+  id: { type: String, required: true },
   name: { type: String, required: true }
-}, kindDiscriminator);
+}, { _id: false, discriminatorKey });
 
-const CompetitionSchema = new Schema({
+const ActivitySchema = new Schema({
   active: { type: Boolean, required: true },
-  admin: { type: Schema.Types.ObjectId, required: true }
-}, kindDiscriminator);
+  admin: { type: String, required: true },
+  members: { type: [UserMetaSchema], required: true },
+}, { discriminatorKey });
 
 const GolfHoleSchema = new Schema({
   hole: { type: Number, required: true },
   par: { type: Number, required: true },
-});
+}, { _id: false });
 
-const GolfUserMeta = UserMetaSchema.discriminator(golfDiscriminatorKey, new Schema({
-  handicap: { type: Number, required: true }
-}, kindDiscriminator));
-
-const GolfStrokesSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, required: true },
+const GolfScoreSchema = new Schema({
   hole: { type: Number, required: true },
   strokes: { type: Number, required: true },
-});
+}, { _id: false });
 
-const CompetitionModel: Model<Competition> = mongoose.models.competitions || mongoose.model("competitions", CompetitionSchema);
+const GolfUserMetaSchema = UserMetaSchema.discriminator(golfDiscriminatorKey, new Schema({
+  handicap: { type: Number, required: true },
+  score: { type: [GolfScoreSchema], required: true },
+}, { _id: false }));
 
+// collection base models
+const ActivityModel: Model<Activity> = mongoose.models.activities || mongoose.model("activities", ActivitySchema);
+
+// exported models
 export const UserModel: Model<Database.User> = mongoose.models.users || mongoose.model("users", UserSchema);
-export const GolfCompetitionModel: Model<Database.GolfCompetition> = mongoose.models.competitions.discriminators?.golf || CompetitionModel.discriminator(golfDiscriminatorKey, new Schema({
-  players: { type: [GolfUserMeta], required: true },
+export const GolfActivityModel: Model<Database.GolfActivity> = mongoose.models.activities.discriminators?.golf || ActivityModel.discriminator(golfDiscriminatorKey, new Schema({
+  members: { type: [GolfUserMetaSchema], required: true },
   holes: { type: [GolfHoleSchema], required: true },
-  strokes: { type: [GolfStrokesSchema], required: true },
-}, kindDiscriminator));
+}));
+
+

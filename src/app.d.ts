@@ -4,6 +4,9 @@ import { ObjectId } from 'mongoose';
 // for information about these interfaces
 declare global {
 
+  type UserMetaKind = 'golf';
+  type ActivityKind = 'golf';
+
   interface GlobalUser {
     email: string
     firstName: string
@@ -11,14 +14,19 @@ declare global {
   }
 
   interface UserMeta {
+    kind: UserMetaKind
     id: string
     name: string
   }
 
-  interface Competition {
+  interface Activity {
+    kind: ActivityKind
     name: string;
     active: boolean
+    start?: Date
+    end?: Date
     admin: string
+    members: UserMeta[]
   }
 
   interface GolfHole {
@@ -27,19 +35,20 @@ declare global {
   }
 
   interface GolfUserMeta extends UserMeta {
+    kind: "golf",
     handicap: number
+    score: GolfStroke[]
   }
 
-  interface GolfStrokes {
-    user: string
+  interface GolfStroke {
     hole: number
     strokes: number
   }
 
-  interface GlobalGolfCompetition extends Competition {
-    players: GolfUserMeta[]
+  interface GlobalGolfActivity extends Activity {
+    kind: "golf"
+    members: GolfUserMeta[]
     holes: GolfHole[]
-    strokes: GolfStrokes[]
   }
 
   namespace Database {
@@ -51,7 +60,7 @@ declare global {
       password: string
     }
 
-    interface GolfCompetition extends GlobalGolfCompetition, Entity { }
+    interface GolfActivity extends GlobalGolfActivity, Entity { }
   }
 
   namespace App {
@@ -61,7 +70,7 @@ declare global {
 
     interface Claims extends Entity { }
     interface User extends GlobalUser, Entity { }
-    interface GolfCompetition extends GlobalGolfCompetition, Entity { }
+    interface GolfActivity extends GlobalGolfActivity, Entity { }
 
     // interface Error {}
     interface Locals {

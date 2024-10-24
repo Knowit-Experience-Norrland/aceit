@@ -5,7 +5,7 @@
 	export let form: ActionData;
 </script>
 
-<h1>Add Competition</h1>
+<h1>Add Activity</h1>
 
 <form action="" method="POST">
 	<label for="name_input">Name</label>

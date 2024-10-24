@@ -16,7 +16,7 @@
 <header>
 	{#if $user}
 		<div class="top-right">
-			<a href="/create-competition">Create Competition</a>
+			<a href="/create-activity">Create Activity</a>
 			<div class="profile">
 				<span>{$user?.firstName}</span>
 				<form action="/logout" method="POST">

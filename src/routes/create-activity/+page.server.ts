@@ -1,6 +1,6 @@
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
-import { getUsers, insertGolfCompetition } from "$lib/server/db";
+import { getUsers, insertGolfActivity } from "$lib/server/db";
 
 export const load: PageServerLoad = async ({ locals }) => {
   const users = await getUsers();
@@ -50,9 +50,11 @@ export const actions: Actions = {
       }
 
       golfUserMeta.push({
+        kind: 'golf',
         id: user.id,
         name: `${user.firstName} ${user.lastName}`,
-        handicap: 0
+        handicap: 0,
+        score: [],
       });
     }
 
@@ -61,26 +63,26 @@ export const actions: Actions = {
     for (let i = 1; i <= parseInt(holes); i++) {
       golfHoles.push({
         hole: i,
-        par: 3, // TODO: Make configurable
+        par: 2, // TODO: Make configurable
       });
     }
 
-    const competition: Database.GolfCompetition = {
+    const activity: Database.GolfActivity = {
+      kind: 'golf',
       name,
       active: false,
       admin: locals.claims?.id,
       holes: golfHoles,
-      players: golfUserMeta,
-      strokes: [],
+      members: golfUserMeta,
     };
 
-    const result = await insertGolfCompetition(competition);
+    const result = await insertGolfActivity(activity);
 
     if (!result?._id) {
-      throw error(500, "Failed to create competition");
+      throw error(500, "Failed to create activity");
     }
 
-    throw redirect(302, `/competition/${result._id.toString()}`);
+    throw redirect(302, `/activity/${result._id.toString()}`);
   }
 };
 
