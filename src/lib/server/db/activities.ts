@@ -20,8 +20,6 @@ export const getGolfActivities = async (start: number, count: number) => {
 export const insertGolfActivity = async (activity: Database.GolfActivity) => {
   const model = new GolfActivityModel(activity);
 
-  model.members.map(p => console.log(p));
-
   await model.validate();
   await model.save();
 

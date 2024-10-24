@@ -17,7 +17,10 @@ const UserMetaSchema = new Schema({
 
 const ActivitySchema = new Schema({
   active: { type: Boolean, required: true },
+  name: { type: String, required: true },
   admin: { type: String, required: true },
+  start: { type: Date, required: false },
+  end: { type: Date, required: false },
   members: { type: [UserMetaSchema], required: true },
 }, { discriminatorKey });
 
