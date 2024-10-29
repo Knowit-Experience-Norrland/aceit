@@ -70,4 +70,9 @@
 		display: flex;
 		gap: 0.5rem;
 	}
+
+  main {
+    width: calc(100% - 2rem);
+    margin: auto;
+  }
 </style>
