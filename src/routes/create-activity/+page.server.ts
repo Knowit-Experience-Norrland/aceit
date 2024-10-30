@@ -20,18 +20,23 @@ export const actions: Actions = {
 
     const name = (data.get("name") as string)?.trim();
     const holes = data.get("holes") as string;
+    const description = (data.get("description") as string);
     const userIds = data.getAll("users") as string[];
+    const dateStrings = data.getAll("dates") as string[];
+    const dates = dateStrings.map(date => new Date(date));
+    const start = dates[0];
+    const end = dates.length > 1 && dates[dates.length - 1] || undefined;
 
     if (!name) {
-      return fail(400, { name, holes, users: userIds, error: "Name is required" });
+      return fail(400, { name, holes, users: userIds, description, dates: dateStrings, error: "Name is required" });
     }
 
     if (!holes) {
-      return fail(400, { name, holes, users: userIds, error: "Holes are required" });
+      return fail(400, { name, holes, users: userIds, description, dates: dateStrings, error: "Holes are required" });
     }
 
     if (!userIds) {
-      return fail(400, { name, holes, users: userIds, error: "Users are required" });
+      return fail(400, { name, holes, users: userIds, description, dates: dateStrings, error: "Users are required" });
     }
 
     if (!locals.claims) {
@@ -62,17 +67,23 @@ export const actions: Actions = {
       golfHoles.push({
         hole: i,
         par: 2, // TODO: Make configurable
+        date: dates[i -1]
       });
     }
 
     const activity: Database.GolfActivity = {
       kind: 'golf',
       name,
-      active: false,
+      description,
+      active: true, // TODO: Make configurable
+      start,
+      end,
       admin: locals.claims?.id,
       holes: golfHoles,
       members: golfUserMeta,
     };
+
+    console.log(activity);
 
     const result = await insertGolfActivity(activity);
 

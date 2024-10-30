@@ -18,6 +18,7 @@ const UserMetaSchema = new Schema({
 const ActivitySchema = new Schema({
   active: { type: Boolean, required: true },
   name: { type: String, required: true },
+  description: { type: String, required: false },
   admin: { type: String, required: true },
   start: { type: Date, required: false },
   end: { type: Date, required: false },
@@ -27,6 +28,7 @@ const ActivitySchema = new Schema({
 const GolfHoleSchema = new Schema({
   hole: { type: Number, required: true },
   par: { type: Number, required: true },
+  date: { type: Date, required: false },
 }, { _id: false });
 
 const GolfScoreSchema = new Schema({
