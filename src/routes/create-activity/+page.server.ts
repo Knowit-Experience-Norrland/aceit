@@ -20,33 +20,31 @@ export const actions: Actions = {
 
     const name = (data.get("name") as string)?.trim();
     const holes = data.get("holes") as string;
-    const users = data.getAll("users") as string[];
+    const userIds = data.getAll("users") as string[];
 
     if (!name) {
-      return fail(400, { name, holes, users, error: "Name is required" });
+      return fail(400, { name, holes, users: userIds, error: "Name is required" });
     }
 
     if (!holes) {
-      return fail(400, { name, holes, users, error: "Holes is required" });
+      return fail(400, { name, holes, users: userIds, error: "Holes are required" });
     }
 
-    if (!users) {
-      return fail(400, { name, holes, users, error: "Users is required" });
+    if (!userIds) {
+      return fail(400, { name, holes, users: userIds, error: "Users are required" });
     }
 
     if (!locals.claims) {
       throw redirect(302, `/login`);
     }
 
-    const dbUsers = await getUsers();
+    const dbUsers = await getUsers(userIds);
 
     const golfUserMeta: GolfUserMeta[] = [];
 
-    for (const id of users) {
-      const user = dbUsers?.find((u) => u.id === id);
-
+    dbUsers.map(user => {
       if (!user) {
-        continue;
+        return;
       }
 
       golfUserMeta.push({
@@ -56,7 +54,7 @@ export const actions: Actions = {
         handicap: 0,
         score: [],
       });
-    }
+    });
 
     const golfHoles: GolfHole[] = [];
 

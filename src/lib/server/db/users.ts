@@ -17,8 +17,9 @@ export const getUser = async (id: string) => {
   return convertToAppUser(databaseUser);
 }
 
-export const getUsers = async () => {
-  const databaseUsers = await UserModel.collection.find({}, options).toArray() as unknown as Database.User[];
+export const getUsers = async (ids?: string[]) => {
+  const filter = ids ? { _id: { $in: ids.map((id) => new ObjectId(id)) } } : {};
+  const databaseUsers = await UserModel.collection.find(filter, options).toArray() as unknown as Database.User[];
 
   return databaseUsers.map(convertToAppUser);
 }
