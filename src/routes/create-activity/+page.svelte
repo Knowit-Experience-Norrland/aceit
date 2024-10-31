@@ -3,18 +3,59 @@
 	import Input from '$lib/components/input.svelte';
 	import type { ActionData, PageServerData } from './$types';
 	import { localDateStringWithoutTime } from '$lib/date';
+	import { onMount } from 'svelte';
 
 	export let data: PageServerData;
 	export let form: ActionData;
 
+	let holes = parseInt(form?.holes || '18');
 	let selectedDates: Date[] = form?.dates ? form.dates.map((date) => new Date(date)) : [];
+
+	$: {
+    // remove dates if holes is less than the number of selected dates
+		if (selectedDates.length > holes) {
+			const numOfDatesToRemove = selectedDates.length - holes;
+			selectedDates = selectedDates.slice(0, selectedDates.length - numOfDatesToRemove);
+		}
+	}
+
+	$: holes && generateDates(); // regenerate dates when holes change
+
+	/**
+	 * Generates dates based on the number of holes.
+	 * Automatically skips off days (weekends).
+	 */
+	const generateDates = () => {
+		const dates: Date[] = [];
+		let j = holes - selectedDates.length;
+
+		for (let i = 0; i < j; i++) {
+			const lastDate = selectedDates[selectedDates.length - 1];
+
+			const date = lastDate ? new Date(lastDate) : new Date();
+			lastDate && date.setDate(lastDate.getDate() + 1);
+			date.setDate(date.getDate() + i);
+			const offDays = [0, 6]; // TODO: account for holidays
+
+			if (offDays.includes(date.getDay())) {
+				j++;
+				continue;
+			}
+
+			dates.push(date);
+		}
+
+		selectedDates = [...selectedDates, ...dates];
+	};
+
+	onMount(generateDates);
 </script>
 
 <h1>Skapa aktivitet</h1>
 
 <form action="" method="POST">
 	<Input label="Namn på aktivitet" id="name_input" name="name" value={form?.name || ''} />
-	<Input label="Antal hål" id="holes_input" name="holes" type="number" value={form?.holes || 0} />
+	<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
 	<Input
 		label="Beskrivning"
 		id="description_input"
@@ -34,10 +75,10 @@
 			<span>
 				<input
 					type="checkbox"
-					name="users"
+					name="usersIds"
 					value={user.id}
 					id={user.id}
-					checked={form?.users?.includes(user.id)}
+					checked={form?.userIds?.includes(user.id)}
 				/>
 				<label for={user.id}>{user.firstName} {user.lastName}</label>
 			</span>
