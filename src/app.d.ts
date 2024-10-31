@@ -22,6 +22,7 @@ declare global {
   interface Activity {
     kind: ActivityKind
     name: string;
+    description?: string;
     active: boolean
     start?: Date
     end?: Date
@@ -32,6 +33,7 @@ declare global {
   interface GolfHole {
     hole: number
     par: number
+    date?: Date
   }
 
   interface GolfUserMeta extends UserMeta {

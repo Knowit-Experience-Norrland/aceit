@@ -56,8 +56,16 @@
 	}
 }
 
+@mixin border-radius {
+  border-radius: 0.5rem;
+}
+
+@mixin border {
+  border: 1px solid $clr-border;
+}
+
 @mixin box {
-	border-radius: 1rem;
+  @include border-radius;
 	-webkit-box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
 	box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
