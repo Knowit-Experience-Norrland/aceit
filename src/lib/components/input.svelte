@@ -12,13 +12,17 @@
 	{#if label}
 		<label for={id}>{label}</label>
 	{/if}
-	<input {name} {id} {type} {placeholder} {value} {disabled} />
+	{#if type === 'number'}
+		<input {name} {id} type="number" {placeholder} bind:value {disabled} />
+	{:else}
+		<input {name} {id} type="text" {placeholder} bind:value {disabled} />
+	{/if}
 </div>
 
 <style lang="scss">
 	div {
-    display: grid;
-    gap: 0.5rem;
+		display: grid;
+		gap: 0.5rem;
 
 		label {
 			@include text-sm;
