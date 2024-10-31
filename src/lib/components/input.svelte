@@ -29,7 +29,11 @@
 		}
 
 		input {
+      @include border;
+			border-radius: 0.225rem;
 			padding: 0.5rem;
+      background: $clr-background;
+      color: $clr-text;
 		}
 	}
 </style>
