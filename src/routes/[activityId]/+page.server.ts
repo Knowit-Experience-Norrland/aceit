@@ -37,7 +37,7 @@ default: async({  locals, request, params }) => {
     const name = (formData.get("name") as string)?.trim();
     const holes = formData.get("holes") as string;
     const users = formData.getAll("users") as string[];
-    
+    // const description = formData.get("description") as string;
     
 
     if (!name) {
@@ -47,6 +47,10 @@ default: async({  locals, request, params }) => {
     if (!holes) {
         return fail(400, { name, holes, users, error: "Holes is required" });
       }
+
+    // if (!description) {
+    //     return fail(400, { name, holes, description, users: userIds, error: "Description is required" });
+    //   }
   
     if (!users) {
         return fail(400, { name, holes, users, error: "Users is required" });
@@ -93,6 +97,7 @@ default: async({  locals, request, params }) => {
         active: false,
         members: golfUserMeta.length > 0 ? golfUserMeta : activity.members,
         holes: golfHoles.length > 0 ? golfHoles : activity.holes,
+        // description: description || activity.description,
     };
 
 
