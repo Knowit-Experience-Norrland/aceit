@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '$lib/components/icon.svelte';
+	import Icon from '$lib/components/icon_star.svelte';
 </script>
 
 <h1>Profilsida</h1>
@@ -11,11 +11,6 @@
 	<a href="/target-page">Logga ut</a>
 </div>
 
-
-
 <style lang="scss">
-	.bg-box {
-		background-color: blue;
-		padding: 1.5rem 2rem;
-	}
+
 </style>
