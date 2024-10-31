@@ -189,7 +189,7 @@
 		position: absolute;
 		bottom: -26rem;
 		background: $clr-text;
-		color: $clr-element-bg;
+		color: $clr-background;
 		padding: 1.5rem;
 		z-index: 1;
 	}
