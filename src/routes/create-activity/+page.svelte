@@ -77,6 +77,7 @@
 
 	{#if gameType === 'days'}
 		<DatePicker bind:selectedDates />
+		<input type="hidden" name="holes" value={holes} />
 	{:else}
 		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
 	{/if}
@@ -138,8 +139,8 @@
 		padding: 0.5rem;
 	}
 
-  .actions {
-    display: flex;
-    gap: 1rem;
-  }
+	.actions {
+		display: flex;
+		gap: 1rem;
+	}
 </style>
