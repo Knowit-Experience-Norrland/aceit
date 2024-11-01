@@ -81,9 +81,15 @@ declare global {
       user?: User
       users?: User[]
     }
-    // interface PageData {}
-    // interface PageState {}
-    // interface Platform {}
+
+    namespace RadioButtons {
+      interface Value {
+        value: string;
+        label: string;
+        id?: string;
+        disabled?: boolean;
+      };
+    }
   }
 }
 
