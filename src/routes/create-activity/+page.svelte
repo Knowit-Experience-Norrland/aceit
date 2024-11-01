@@ -77,6 +77,7 @@
 
 	{#if gameType === 'days'}
 		<DatePicker bind:selectedDates />
+		<input type="hidden" name="holes" value={holes} />
 	{:else}
 		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
 	{/if}
@@ -108,7 +109,10 @@
 		{/each}
 	</fieldset>
 
-	<button type="submit">Spara aktivitet</button>
+	<div class="actions">
+		<button type="submit">Spara aktivitet</button>
+		<a href="/">Avbryt</a><!-- TODO: Add back button -->
+	</div>
 </form>
 
 {#if form?.error}
@@ -135,8 +139,8 @@
 		padding: 0.5rem;
 	}
 
-	button {
-		flex: 1;
-		min-width: 0;
+	.actions {
+		display: flex;
+		gap: 1rem;
 	}
 </style>
