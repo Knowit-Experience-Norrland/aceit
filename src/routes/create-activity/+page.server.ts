@@ -20,6 +20,7 @@ export const actions: Actions = {
 
     const name = (data.get("name") as string)?.trim();
     const holes = data.get("holes") as string;
+    const gameType = data.get("gameType") as string;
     const description = (data.get("description") as string);
     const userIds = data.getAll("usersIds") as string[];
     const dateStrings = data.getAll("dates") as string[];
@@ -28,15 +29,15 @@ export const actions: Actions = {
     const end = dates.length > 1 && dates[dates.length - 1] || undefined;
 
     if (!name) {
-      return fail(400, { name, holes, userIds, description, dates: dateStrings, error: "Name is required" });
+      return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Name is required" });
     }
 
     if (!holes) {
-      return fail(400, { name, holes, userIds, description, dates: dateStrings, error: "Holes are required" });
+      return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Holes are required" });
     }
 
     if (!userIds) {
-      return fail(400, { name, holes, userIds, description, dates: dateStrings, error: "Users are required" });
+      return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Users are required" });
     }
 
     if (!locals.claims) {
