@@ -36,39 +36,41 @@ default: async({  locals, request, params }) => {
 
     const name = (formData.get("name") as string)?.trim();
     const holes = formData.get("holes") as string;
-    const users = formData.getAll("users") as string[];
-    // const description = formData.get("description") as string;
+    const description = (formData.get("description") as string);
+    const userIds = formData.getAll("userIds") as string[];
+    const dateStrings = formData.getAll("dates") as string[];
+    const dates = dateStrings.map(date => new Date(date));
+    const start = dates[0];
+    const end = dates.length > 1 && dates[dates.length - 1] || undefined; 
     
 
     if (!name) {
-        return fail(400, { name, holes, users, error: "Name is required" });
+        return fail(400, { name, holes, description, userIds, dates: dateStrings,  error: "Name is required" });
       }
   
     if (!holes) {
-        return fail(400, { name, holes, users, error: "Holes is required" });
+        return fail(400, { name, holes, description, userIds, dates: dateStrings,  error: "Holes are required" });
       }
 
-    // if (!description) {
-    //     return fail(400, { name, holes, description, users: userIds, error: "Description is required" });
-    //   }
+    if (!description) {
+        return fail(400, { name, holes, description, userIds, dates: dateStrings, error: "Description is required" });
+      }
   
-    if (!users) {
-        return fail(400, { name, holes, users, error: "Users is required" });
+    if (!userIds) {
+        return fail(400, { name, holes, description, userIds, dates: dateStrings, error: "Users are required" });
       }
   
     if (!locals.claims) {
         throw redirect(302, `/login`);
       }
 
-    const dbUsers = await getUsers();
+      const dbUsers = await getUsers(userIds);
 
-    const golfUserMeta: GolfUserMeta[] = [];
+      const golfUserMeta: GolfUserMeta[] = [];
   
-    for (const id of users) {
-        const user = dbUsers?.find((u) => u.id === id);
-  
+      dbUsers.map(user => {
         if (!user) {
-          continue;
+          return;
         }
   
         golfUserMeta.push({
@@ -78,30 +80,31 @@ default: async({  locals, request, params }) => {
           handicap: 0,
           score: [],
         });
-      }
+      });
   
-    const golfHoles: GolfHole[] = [];
+      const golfHoles: GolfHole[] = [];
   
-    for (let i = 1; i <= parseInt(holes); i++) {
+      for (let i = 1; i <= parseInt(holes); i++) {
         golfHoles.push({
           hole: i,
           par: 2, // TODO: Make configurable
+          date: dates[i -1]
         });
-    }
-  
-
+      }
+    
     const updatedActivity = {
         ...activity, 
         //Update values only if new values is provided
         name: name || activity.name,
+        description: description || activity.description,
         active: false,
+        start,
+        end,
         members: golfUserMeta.length > 0 ? golfUserMeta : activity.members,
         holes: golfHoles.length > 0 ? golfHoles : activity.holes,
-        // description: description || activity.description,
     };
 
 
-    // Update the activity in the database
     const result = await updateGolfActivity(updatedActivity);
 
     if (!result?._id) {
