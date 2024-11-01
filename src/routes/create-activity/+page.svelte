@@ -11,15 +11,21 @@
 	let holes = parseInt(form?.holes || '18');
 	let selectedDates: Date[] = form?.dates ? form.dates.map((date) => new Date(date)) : [];
 
-	$: {
-    // remove dates if holes is less than the number of selected dates
-		if (selectedDates.length > holes) {
-			const numOfDatesToRemove = selectedDates.length - holes;
-			selectedDates = selectedDates.slice(0, selectedDates.length - numOfDatesToRemove);
-		}
-	}
+  $: holes && updateDatesBasedOnHoles(holes);
+  $: selectedDates && updateHolesBasedOnDates(selectedDates);
 
-	$: holes && generateDates(); // regenerate dates when holes change
+  const updateDatesBasedOnHoles = (holes: number) => {
+    if (holes < selectedDates.length) {
+      const numOfDatesToRemove = selectedDates.length - holes;
+      selectedDates = selectedDates.slice(0, selectedDates.length - numOfDatesToRemove);
+    } else if (holes > selectedDates.length) {
+      generateDates();
+    }
+  }
+
+  const updateHolesBasedOnDates = (dates: Date[]) => {
+    holes = dates.length;
+  }
 
 	/**
 	 * Generates dates based on the number of holes.
