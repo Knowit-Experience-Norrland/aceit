@@ -20,33 +20,37 @@ export const actions: Actions = {
 
     const name = (data.get("name") as string)?.trim();
     const holes = data.get("holes") as string;
-    const users = data.getAll("users") as string[];
+    const gameType = data.get("gameType") as string;
+    const description = (data.get("description") as string);
+    const userIds = data.getAll("usersIds") as string[];
+    const dateStrings = data.getAll("dates") as string[];
+    const dates = dateStrings.map(date => new Date(date));
+    const start = dates[0];
+    const end = dates.length > 1 && dates[dates.length - 1] || undefined;
 
     if (!name) {
-      return fail(400, { name, holes, users, error: "Name is required" });
+      return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Name is required" });
     }
 
     if (!holes) {
-      return fail(400, { name, holes, users, error: "Holes is required" });
+      return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Holes are required" });
     }
 
-    if (!users) {
-      return fail(400, { name, holes, users, error: "Users is required" });
+    if (!userIds) {
+      return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Users are required" });
     }
 
     if (!locals.claims) {
       throw redirect(302, `/login`);
     }
 
-    const dbUsers = await getUsers();
+    const dbUsers = await getUsers(userIds);
 
     const golfUserMeta: GolfUserMeta[] = [];
 
-    for (const id of users) {
-      const user = dbUsers?.find((u) => u.id === id);
-
+    dbUsers.map(user => {
       if (!user) {
-        continue;
+        return;
       }
 
       golfUserMeta.push({
@@ -56,7 +60,7 @@ export const actions: Actions = {
         handicap: 0,
         score: [],
       });
-    }
+    });
 
     const golfHoles: GolfHole[] = [];
 
@@ -64,17 +68,23 @@ export const actions: Actions = {
       golfHoles.push({
         hole: i,
         par: 2, // TODO: Make configurable
+        date: dates[i -1]
       });
     }
 
     const activity: Database.GolfActivity = {
       kind: 'golf',
       name,
-      active: false,
+      description,
+      active: true, // TODO: Make configurable
+      start,
+      end,
       admin: locals.claims?.id,
       holes: golfHoles,
       members: golfUserMeta,
     };
+
+    console.log(activity);
 
     const result = await insertGolfActivity(activity);
 
