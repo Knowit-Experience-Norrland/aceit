@@ -41,13 +41,16 @@
 		padding: 0;
 		box-sizing: border-box;
 	}
+
 	:global(body) {
+		background: $knowit-background;
+		color: $clr-text;
 		font-family: $font-sans-serif;
-		@include text-sm;
+		@include text-base;
+
 		//Media Queries
 		@media screen and (min-width: $media-sm) {
 			// Add styles for small screens and up
-			@include text-base;
 		}
 
 		@media screen and (min-width: $media-md) {
@@ -55,9 +58,28 @@
 		}
 	}
 
+	:global(h1) {
+		@include text-lg;
+	}
+
+	:global(h2) {
+		@include text-md;
+	}
+
+	:global(a) {
+		@include text-md;
+		color: $clr-text;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
 	:global(.stop-scroll) {
 		overflow-y: hidden;
 	}
+
 	.top-right {
 		display: flex;
 		gap: 0.5rem;
@@ -71,8 +93,10 @@
 		gap: 0.5rem;
 	}
 
-  main {
-    width: calc(100% - 2rem);
-    margin: auto;
-  }
+	header,
+	main,
+	footer {
+		width: calc($media-md - 2rem);
+		margin: auto;
+	}
 </style>

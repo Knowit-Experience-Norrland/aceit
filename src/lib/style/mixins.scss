@@ -1,53 +1,59 @@
 // NOTE: Font sizes, line heights, and other properties may be adjusted or new mixins added as needed.
 
-@mixin text-4xl {
-	font-size: 4.5rem;
-	line-height: 4.875rem;
-	letter-spacing: -0.04em;
-}
-
-@mixin text-3xl {
-	font-size: 3.25rem;
-	line-height: 3.625rem;
-	letter-spacing: -0.03em;
-}
-
-@mixin text-2xl {
-	font-size: 2.5rem;
-	line-height: 3rem;
-	letter-spacing: -0.03em;
-}
-
-@mixin text-xl {
-	font-size: 1.625rem;
-	line-height: 2rem;
-	letter-spacing: -0.02em;
-}
-
+// Rubrik h1
 @mixin text-lg {
-	font-size: 1.375rem;
-	line-height: 1.813rem;
-	letter-spacing: -0.01em;
+	font-size: 1.5rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.92rem;
 }
 
+// Rubrik h2
 @mixin text-md {
-	font-size: 1.125rem;
-	line-height: 1.625rem;
+	font-size: 1rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.28rem;
 }
 
+// Brödtext
 @mixin text-base {
-	font-size: 1rem;
+	font-size: 0.938rem;
+	font-style: normal;
+	font-weight: 400;
 	line-height: 1.5rem;
 }
 
-@mixin text-sm {
-	font-size: 0.875rem;
-	line-height: 1.3125rem;
+// Brödtext Semibold
+@mixin text-base-sb {
+	font-size: 0.938rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.5rem;
 }
 
+// Mini Brödtext
+@mixin text-sm {
+	font-size: 0.813rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1.3rem;
+}
+
+// Extra Mini Brödtext
 @mixin text-xs {
-	font-size: 0.75rem;
-	line-height: 1.125rem;
+	font-size: 0.688rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1.1rem;
+}
+
+// Extra Mini Brödtext Semibold
+@mixin text-xs {
+	font-size: 0.688rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.1rem;
 }
 
 @mixin wordBreak {
@@ -57,15 +63,15 @@
 }
 
 @mixin border-radius {
-  border-radius: 0.5rem;
+	border-radius: 0.5rem;
 }
 
 @mixin border {
-  border: 1px solid $clr-border;
+	border: 1px solid $clr-border;
 }
 
 @mixin box {
-  @include border-radius;
+	@include border-radius;
 	-webkit-box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
 	box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
