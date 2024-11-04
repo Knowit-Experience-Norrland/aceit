@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 
 	import IconHome from '$lib/components/icon_home.svelte';
@@ -9,49 +9,66 @@
 
 	const menuItems = [
 		{ name: 'Hem', path: '/', icon: IconHome },
-		{ name: 'Ny tävling', path: '/', icon: IconPlusCircle },
-		{ name: 'Hitta användare', path: '/', icon: IconMagnifier },
+		{ name: 'Ny tävling', path: '/create-activity', icon: IconPlusCircle },
+		{ name: 'Hitta användare', path: '/users', icon: IconMagnifier },
 		{ name: 'Min profil', path: '/profile', icon: IconProfile }
 	];
 
 	$: activePath = $page.url.pathname;
 </script>
 
-<nav>
-	<ul>
-		{#each menuItems as item}
-			<li class:item-active={activePath === item.path}>
-				<svelte:component this={item.icon} class="icon" />
-				<a href={item.path}>{item.name}</a>
-			</li>
-		{/each}
+<nav class="navbar">
+	<ul class="nav-list">
+	  {#each menuItems as item}
+		<li class="nav-item {activePath === item.path ? 'item-active' : ''}">
+			<svelte:component this={item.icon} iconClass="icon" />
+			<a href={item.path}>{item.name}</a>
+		</li>
+	  {/each}
 	</ul>
-</nav>
+  </nav>
 
 <style lang="scss">
-	nav {
+	.navbar {
+		position: fixed;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		padding: 1.5rem;
+		width: 100%;
+		z-index: 1000;
+	}
 
-		ul {
-			list-style-type: none;
+	.nav-list {
+		list-style: none;
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		gap: 1.5rem;
+		padding: 0;
+		margin: 0;
+
+		.nav-item {
 			display: flex;
-			justify-content: center;
-			align-items: flex-end;
-			gap: 1.5rem;
-			padding: 0;
+			flex-direction: column;
+			align-items: center;
 
-			li {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
+			.icon {
+				width: 24px;
+				height: 24px;
+				margin-bottom: 0.5rem;
+			}
 
-				.icon {
-					width: 24px;
-					height: 24px;
-					margin-bottom: 0.5rem;
-				}
+			a {
+				@include text-xs;
+				text-decoration: none;
+				color: inherit;
+			}
+
+			&.item-active {
 
 				a {
-					@include text-xs;
+					@include text-xs-sb;
 				}
 			}
 		}
