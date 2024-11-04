@@ -10,7 +10,7 @@
 	const menuItems = [
 		{ name: 'Hem', path: '/', icon: IconHome },
 		{ name: 'Ny tävling', path: '/create-activity', icon: IconPlusCircle },
-		{ name: 'Hitta användare', path: '/users', icon: IconMagnifier },
+		{ name: 'Hitta användare', path: '/find-users', icon: IconMagnifier },
 		{ name: 'Min profil', path: '/profile', icon: IconProfile }
 	];
 
@@ -19,14 +19,14 @@
 
 <nav class="navbar">
 	<ul class="nav-list">
-	  {#each menuItems as item}
-		<li class="nav-item {activePath === item.path ? 'item-active' : ''}">
-			<svelte:component this={item.icon} iconClass="icon" />
-			<a href={item.path}>{item.name}</a>
-		</li>
-	  {/each}
+		{#each menuItems as item}
+			<li class="nav-item {activePath === item.path ? 'item-active' : ''}">
+				<svelte:component this={item.icon} iconClass="icon" />
+				<a href={item.path}>{item.name}</a>
+			</li>
+		{/each}
 	</ul>
-  </nav>
+</nav>
 
 <style lang="scss">
 	.navbar {
@@ -47,29 +47,29 @@
 		gap: 1.5rem;
 		padding: 0;
 		margin: 0;
+	}
 
-		.nav-item {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
+	.nav-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 
-			.icon {
-				width: 24px;
-				height: 24px;
-				margin-bottom: 0.5rem;
-			}
+		:global(.icon) {
+			width: 30px;
+			height: 30px;
+			margin-bottom: 0.5rem;
+		}
+
+		a {
+			@include text-xs;
+			text-decoration: none;
+			color: inherit;
+		}
+
+		&.item-active {
 
 			a {
-				@include text-xs;
-				text-decoration: none;
-				color: inherit;
-			}
-
-			&.item-active {
-
-				a {
-					@include text-xs-sb;
-				}
+				@include text-xs-sb;
 			}
 		}
 	}
