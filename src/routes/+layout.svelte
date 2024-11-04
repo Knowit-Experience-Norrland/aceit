@@ -2,6 +2,8 @@
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 
+	import Nav from '$lib/components/nav.svelte';
+
 	import type { LayoutServerData } from './$types';
 
 	export let data: LayoutServerData;
@@ -31,7 +33,9 @@
 	<slot />
 </main>
 
-<footer></footer>
+<footer>
+	<Nav />
+</footer>
 
 <style lang="scss">
 	@import '$lib/style/mixins.scss';
