@@ -46,12 +46,11 @@
 		background: $knowit-background;
 		color: $clr-text;
 		font-family: $font-sans-serif;
-		@include text-sm;
+		@include text-base;
 
 		//Media Queries
 		@media screen and (min-width: $media-sm) {
 			// Add styles for small screens and up
-			@include text-base;
 		}
 
 		@media screen and (min-width: $media-md) {
@@ -59,8 +58,12 @@
 		}
 	}
 
-	:global(.stop-scroll) {
-		overflow-y: hidden;
+	:global(h1) {
+		@include text-lg;
+	}
+
+	:global(h2) {
+		@include text-md;
 	}
 
 	:global(a) {
@@ -71,6 +74,10 @@
 		&:hover {
 			text-decoration: none;
 		}
+	}
+
+	:global(.stop-scroll) {
+		overflow-y: hidden;
 	}
 
 	.top-right {
