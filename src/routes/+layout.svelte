@@ -100,7 +100,7 @@
 	header,
 	main,
 	footer {
-		width: calc($media-md - 2rem);
+		width: calc($media-sm - 2rem);
 		margin: auto;
 	}
 </style>
