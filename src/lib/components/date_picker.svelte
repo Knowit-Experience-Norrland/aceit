@@ -3,6 +3,8 @@
 
 	import { onDestroy, onMount } from 'svelte';
 	import { displayMonthAndYear, displayYearMonthAndDay } from '$lib/date';
+	import IconArrowRight from './icon_arrow_right.svelte';
+	import IconCalendar from './icon_calendar.svelte';
 
 	const weekdays = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
 
@@ -122,11 +124,11 @@
 		<span class="date {selectedDates.length > 0 ? 'selected' : ''}">
 			{displayYearMonthAndDay(startDate) || 'Start datum'}
 		</span>
-		<span>{'>'}</span>
+    <IconArrowRight />
 		<span class="date {selectedDates.length > 1 ? 'selected' : ''}">
 			{displayYearMonthAndDay(endDate) || 'Slut datum'}
 		</span>
-		<span>{'🗓️'}</span>
+    <IconCalendar />
 	</div>
 
 	{#if open}
@@ -171,7 +173,8 @@
 		max-width: 22rem;
 		display: flex;
 		justify-content: space-between;
-		padding: 1rem;
+    align-items: center;
+		padding: 0.5rem 1.5rem;
 		background: $clr-element-bg;
 		color: $clr-text;
 
@@ -190,7 +193,6 @@
 		bottom: -26rem;
 		background: $clr-text;
 		color: $clr-background;
-		padding: 1.5rem;
 		z-index: 1;
 	}
 	.calendar {

@@ -42,8 +42,11 @@
 		box-sizing: border-box;
 	}
 	:global(body) {
+		background: $knowit-background;
+		color: $clr-text;
 		font-family: $font-sans-serif;
 		@include text-sm;
+
 		//Media Queries
 		@media screen and (min-width: $media-sm) {
 			// Add styles for small screens and up
@@ -71,8 +74,10 @@
 		gap: 0.5rem;
 	}
 
-  main {
-    width: calc(100% - 2rem);
-    margin: auto;
-  }
+	header,
+	main,
+	footer {
+		width: calc($media-md - 2rem);
+		margin: auto;
+	}
 </style>
