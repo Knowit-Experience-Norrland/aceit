@@ -41,6 +41,7 @@
 		padding: 0;
 		box-sizing: border-box;
 	}
+
 	:global(body) {
 		background: $knowit-background;
 		color: $clr-text;
@@ -61,6 +62,17 @@
 	:global(.stop-scroll) {
 		overflow-y: hidden;
 	}
+
+	:global(a) {
+		@include text-md;
+		color: $clr-text;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
 	.top-right {
 		display: flex;
 		gap: 0.5rem;
