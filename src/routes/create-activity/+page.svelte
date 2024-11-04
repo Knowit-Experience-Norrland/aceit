@@ -4,22 +4,35 @@
 	import type { ActionData, PageServerData } from './$types';
 	import { localDateStringWithoutTime } from '$lib/date';
 	import { onMount } from 'svelte';
+	import RadioButtons from '$lib/components/radio_buttons.svelte';
+
+	const gameTypes: App.RadioButtons.Value[] = [
+		{ value: 'days', label: 'Välj dagar för omgångar' },
+		{ value: 'free', label: 'Fria omgångar' }
+	];
 
 	export let data: PageServerData;
 	export let form: ActionData;
 
 	let holes = parseInt(form?.holes || '18');
 	let selectedDates: Date[] = form?.dates ? form.dates.map((date) => new Date(date)) : [];
+	let gameType: string = form?.gameType || 'days';
 
-	$: {
-    // remove dates if holes is less than the number of selected dates
-		if (selectedDates.length > holes) {
+	$: holes && updateDatesBasedOnHoles(holes);
+	$: selectedDates && updateHolesBasedOnDates(selectedDates);
+
+	const updateDatesBasedOnHoles = (holes: number) => {
+		if (holes < selectedDates.length) {
 			const numOfDatesToRemove = selectedDates.length - holes;
 			selectedDates = selectedDates.slice(0, selectedDates.length - numOfDatesToRemove);
+		} else if (holes > selectedDates.length) {
+			generateDates();
 		}
-	}
+	};
 
-	$: holes && generateDates(); // regenerate dates when holes change
+	const updateHolesBasedOnDates = (dates: Date[]) => {
+		holes = dates.length;
+	};
 
 	/**
 	 * Generates dates based on the number of holes.
@@ -55,15 +68,26 @@
 
 <form action="" method="POST">
 	<Input label="Namn på aktivitet" id="name_input" name="name" value={form?.name || ''} />
-	<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
+	<RadioButtons
+		legend="Hur ska hålen spelas?"
+		values={gameTypes}
+		bind:selectedValue={gameType}
+		name="gameType"
+	/>
+
+	{#if gameType === 'days'}
+		<DatePicker bind:selectedDates />
+		<input type="hidden" name="holes" value={holes} />
+	{:else}
+		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
+	{/if}
+
 	<Input
 		label="Beskrivning"
 		id="description_input"
 		name="description"
 		value={form?.description || ''}
 	/>
-
-	<DatePicker bind:selectedDates />
 
 	{#each selectedDates as date}
 		<input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
@@ -85,7 +109,10 @@
 		{/each}
 	</fieldset>
 
-	<button type="submit">Spara aktivitet</button>
+	<div class="actions">
+		<button type="submit">Spara aktivitet</button>
+		<a href="/">Avbryt</a><!-- TODO: Add back button -->
+	</div>
 </form>
 
 {#if form?.error}
@@ -112,8 +139,8 @@
 		padding: 0.5rem;
 	}
 
-	button {
-		flex: 1;
-		min-width: 0;
+	.actions {
+		display: flex;
+		gap: 1rem;
 	}
 </style>
