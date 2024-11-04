@@ -21,7 +21,8 @@
 	<ul>
 		{#each menuItems as item}
 			<li class:item-active={activePath === item.path}>
-			<a href={item.path}>{item.name}</a>
+				<svelte:component this={item.icon} class="icon" />
+				<a href={item.path}>{item.name}</a>
 			</li>
 		{/each}
 	</ul>
@@ -34,9 +35,20 @@
 			list-style-type: none;
 			display: flex;
 			justify-content: center;
+			align-items: flex-end;
 			gap: 1.5rem;
+			padding: 0;
 
 			li {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.icon {
+					width: 24px;
+					height: 24px;
+					margin-bottom: 0.5rem;
+				}
 
 				a {
 					@include text-xs;
