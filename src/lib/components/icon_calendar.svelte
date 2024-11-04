@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	export let width  = '14';
 	export let height = '14';
 	export let fill   = 'currentColor';
