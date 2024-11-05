@@ -65,6 +65,7 @@
 		color: $clr-text;
 		font-family: $font-sans-serif;
 		@include text-base;
+		-webkit-font-smoothing: antialiased;
 
 		//Media Queries
 		@media screen and (min-width: $media-sm) {
@@ -96,6 +97,13 @@
 
 	:global(.stop-scroll) {
 		overflow-y: hidden;
+	}
+
+	:global(.card) {
+		border-radius: 0.5rem;
+		background: $clr-card-bg;
+		margin: 2rem 0;
+		padding: 1.5rem 1.875rem;
 	}
 
 	header,
