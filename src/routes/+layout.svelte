@@ -46,7 +46,9 @@
 </main>
 
 <footer>
-	<Nav />
+	{#if $user}
+		<Nav />
+	{/if}
 </footer>
 
 <style lang="scss">

@@ -18,25 +18,21 @@
 	];
 
 	$: activePath = $page.url.pathname;
-
-	let isLoggedIn = false;
 </script>
 
-{#if isLoggedIn}
-	<nav class="navbar">
-		<ul class="nav-list">
-			{#each menuItems as item}
-				<li class="nav-item {activePath === item.path ? 'item-active' : ''}">
-					<svelte:component
-						this={activePath === item.path ? item.iconActive : item.icon}
-						iconClass="icon {activePath === item.path ? 'icon-active' : ''}"
-					/>
-					<a href={item.path}>{item.name}</a>
-				</li>
-			{/each}
-		</ul>
-	</nav>
-{/if}
+<nav class="navbar">
+	<ul class="nav-list">
+		{#each menuItems as item}
+			<li class="nav-item {activePath === item.path ? 'item-active' : ''}">
+				<svelte:component
+					this={activePath === item.path ? item.iconActive : item.icon}
+					iconClass="icon {activePath === item.path ? 'icon-active' : ''}"
+				/>
+				<a href={item.path}>{item.name}</a>
+			</li>
+		{/each}
+	</ul>
+</nav>
 
 <style lang="scss">
 	.navbar {
