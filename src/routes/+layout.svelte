@@ -84,6 +84,14 @@
 		overflow-y: hidden;
 	}
 
+	header,
+	main,
+	footer {
+		width: 100%;
+		max-width: $media-sm;
+		margin: 0 auto;
+	}
+
 	.top-right {
 		display: flex;
 		gap: 0.5rem;
@@ -95,12 +103,5 @@
 	.profile {
 		display: flex;
 		gap: 0.5rem;
-	}
-
-	header,
-	main,
-	footer {
-		width: calc($media-sm - 2rem);
-		margin: auto;
 	}
 </style>
