@@ -112,6 +112,12 @@
 		width: 100%;
 		max-width: $media-sm;
 		margin: 0 auto;
+		padding: 0 1.25rem;
+
+		//Media Queries
+		@media screen and (min-width: $media-md) {
+			padding: 0;
+		}
 	}
 
 	.top-right {
