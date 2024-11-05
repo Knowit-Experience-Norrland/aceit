@@ -25,9 +25,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 export const actions: Actions = {
 default: async({  locals, request, params }) => {
+
     const activityId = params.activityId; 
-   
     const activity = await getGolfActivity(activityId);
+    
     if (!activity) {
             throw error(404, "Original activity not found");
         }
@@ -36,6 +37,7 @@ default: async({  locals, request, params }) => {
 
     const name = (formData.get("name") as string)?.trim();
     const holes = formData.get("holes") as string;
+    const gameType = formData.get("gameType") as string;
     const description = (formData.get("description") as string);
     const userIds = formData.getAll("userIds") as string[];
     const dateStrings = formData.getAll("dates") as string[];
@@ -45,19 +47,19 @@ default: async({  locals, request, params }) => {
     
 
     if (!name) {
-        return fail(400, { name, holes, description, userIds, dates: dateStrings,  error: "Name is required" });
+        return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings,  error: "Name is required" });
       }
   
     if (!holes) {
-        return fail(400, { name, holes, description, userIds, dates: dateStrings,  error: "Holes are required" });
+        return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings,  error: "Holes are required" });
       }
 
     if (!description) {
-        return fail(400, { name, holes, description, userIds, dates: dateStrings, error: "Description is required" });
+        return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings, error: "Description is required" });
       }
   
     if (!userIds) {
-        return fail(400, { name, holes, description, userIds, dates: dateStrings, error: "Users are required" });
+        return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings, error: "Users are required" });
       }
   
     if (!locals.claims) {

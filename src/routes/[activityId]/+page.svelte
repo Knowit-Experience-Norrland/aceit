@@ -6,6 +6,15 @@ import type { ActionData, PageServerData } from './$types';
 import { localDateStringWithoutTime } from '$lib/date';
 import { getContext } from 'svelte';
 import type { Writable } from 'svelte/store';
+import { onMount } from 'svelte';
+import RadioButtons from '$lib/components/radio_buttons.svelte';
+
+
+const gameTypes: App.RadioButtons.Value[] = [
+	{ value: 'days', label: 'Välj dagar för omgångar' },
+	{ value: 'free', label: 'Fria omgångar' }
+];
+
 export let data: PageServerData;
 export let form: ActionData;
 
@@ -16,18 +25,88 @@ let showModal = false;
 
 let activityName = data.activity.name;
 let activityKind = data.activity.kind;
-let holes = data.activity.holes.length;
+let holes = parseInt(form?.holes || data.activity.holes.length.toString());
 let description = data?.activity.description;
 let members = data.activity.members;
+let isMember = false
 let activityDates: Date[]  = data.activity.holes.filter(hole => hole.date !== undefined).map(hole => new Date(hole.date!) )
 
 let selectedUsers = members.map(member => member.id);
 let isAllSelected = selectedUsers.length === data.users.length;
 let selectedDates: Date[] = form?.dates ? form.dates.filter(date => date !== undefined).map((date) => new Date(date)) : activityDates;
+let gameType: string = form?.gameType || 'days';
 
 function toggleEditMode() {
     editMode = !editMode;
 }
+
+
+$: isMember = members.some(member => member.id === $user.id);
+$: holes && updateDatesBasedOnHoles(holes);
+	$: selectedDates && updateHolesBasedOnDates(selectedDates);
+
+	const updateDatesBasedOnHoles = (holes: number) => {
+		if (holes < selectedDates.length) {
+			const numOfDatesToRemove = selectedDates.length - holes;
+			selectedDates = selectedDates.slice(0, selectedDates.length - numOfDatesToRemove);
+		} else if (holes > selectedDates.length) {
+			generateDates();
+		}
+	};
+
+	const updateHolesBasedOnDates = (dates: Date[]) => {
+		holes = dates.length;
+	};
+
+	/**
+	 * Generates dates based on the number of holes.
+	 * Automatically skips off days (weekends).
+	 */
+	const generateDates = () => {
+		const dates: Date[] = [];
+		let j = holes - selectedDates.length;
+
+		for (let i = 0; i < j; i++) {
+			const lastDate = selectedDates[selectedDates.length - 1];
+
+			const date = lastDate ? new Date(lastDate) : new Date();
+			lastDate && date.setDate(lastDate.getDate() + 1);
+			date.setDate(date.getDate() + i);
+			const offDays = [0, 6]; // TODO: account for holidays
+
+			if (offDays.includes(date.getDay())) {
+				j++;
+				continue;
+			}
+
+			dates.push(date);
+		}
+
+		selectedDates = [...selectedDates, ...dates];
+	};
+
+	onMount(generateDates);
+
+
+async function setActivityMembership(action:string) {
+		const response = await fetch(`/api/join?get=${action}`, {
+			method: 'PUT',
+			body: JSON.stringify({ activityId: data.activity.id, user: $user }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const result = await response.json();
+		
+		if (result && result.members) {
+            members = result.members;
+			console.log("result",result);
+			
+		 }
+		return result
+	}
+	
 
 </script>
 
@@ -36,7 +115,19 @@ function toggleEditMode() {
 {#if editMode}
     <form action="" method="POST" >
         <Input label="Namn på aktivitet" id="name" type="text" name="name" value={form?.name || activityName} />
-        <Input label="Antal hål" id="holes" type="number" name="holes" value={form?.holes || holes } />
+        <RadioButtons
+		legend="Hur ska hålen spelas?"
+		values={gameTypes}
+		bind:selectedValue={gameType}
+		name="gameType"
+	/>
+
+    {#if gameType === 'days'}
+		<DatePicker bind:selectedDates />
+		<input type="hidden" name="holes" value={holes} />
+	{:else}
+		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
+	{/if}
         <Input
 		    label="Beskrivning"
 		    id="description_input"
@@ -44,7 +135,7 @@ function toggleEditMode() {
 		    value={form?.description || description || ''}
         />
 
-        <DatePicker bind:selectedDates />
+        <!-- <DatePicker bind:selectedDates /> -->
 
         {#each selectedDates as date}
 		    <input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
@@ -79,7 +170,7 @@ function toggleEditMode() {
 {:else}
     <p>{activityName}</p>
     <p>Aktivitet: {activityKind}</p>
-    <p>Antal hål: {holes}</p>
+    <p>Antal omgångar: {holes}</p>
     <p>Beskrivning: {description}</p>  
 {/if}
 
@@ -89,8 +180,15 @@ function toggleEditMode() {
 {/if}
 
 
-<button>Gå med i tävling</button>
-<button on:click={() => showModal = true}>Lägg till fler deltagare</button>
+{#if !isAdmin}
+<button on:click={() => { 
+	 setActivityMembership(isMember ? 'leave' : 'join'); 
+ }}>
+ 	{#if isMember}Lämna tävling{/if}
+    {#if !isMember}Gå med i tävling{/if}
+</button>
+{/if}
+<!-- <button on:click={() => showModal = true}>Lägg till fler deltagare</button>
 <Modal bind:show={showModal}>
 
     {#each data.users as user}
@@ -101,7 +199,9 @@ function toggleEditMode() {
 {/each}
 
 <button>Lägg till</button>
-</Modal>
+</Modal> -->
+
+
 
 <style lang="scss">
 	h1 {
