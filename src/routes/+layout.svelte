@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { page } from '$app/stores';
 
 	import Nav from '$lib/components/nav.svelte';
+	import PageTitle from '$lib/components/page_title.svelte';
 
 	import type { LayoutServerData } from './$types';
 
@@ -13,6 +15,14 @@
 	$: user.set(data.user);
 
 	setContext('user', user);
+
+	// Mapping of route paths to custom page names
+	const pageTitles = {
+		'/': 'Pågående aktiviteter',
+		'/create-activity': 'Skapa aktivitet',
+		'/find-users': 'Hitta användare',
+		'/profile': 'Profilsida',
+	};
 </script>
 
 <header>
@@ -27,6 +37,8 @@
 			</div>
 		</div>
 	{/if}
+
+	<PageTitle {pageTitles} />
 </header>
 
 <main>
