@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import RadioButtons from '$lib/components/radio_buttons.svelte';
 
-	const gameTypes: App.RadioButtons.Value[] = [
+	const gameTypes: App.InputValue[] = [
 		{ value: 'days', label: 'Välj dagar för omgångar' },
 		{ value: 'free', label: 'Fria omgångar' }
 	];

@@ -82,14 +82,12 @@ declare global {
       users?: User[]
     }
 
-    namespace RadioButtons {
-      interface Value {
-        value: string;
-        label: string;
-        id?: string;
-        disabled?: boolean;
-      };
-    }
+    interface InputValue {
+      value: string;
+      label: string;
+      id?: string;
+      disabled?: boolean;
+    };
   }
 }
 

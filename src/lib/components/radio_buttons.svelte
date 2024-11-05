@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let values: App.RadioButtons.Value[] = [];
+	export let values: App.InputValue[] = [];
 	export let name: string = '';
 	export let selectedValue: string = '';
 	export let legend: string | undefined = undefined;
