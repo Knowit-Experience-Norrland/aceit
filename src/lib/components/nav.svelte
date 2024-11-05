@@ -31,45 +31,45 @@
 <style lang="scss">
 	.navbar {
 		position: fixed;
-		bottom: 0;
+		bottom: 1.5rem;
 		left: 50%;
 		transform: translateX(-50%);
-		padding: 1.5rem;
 		width: 100%;
+		max-width: $media-sm;
 		z-index: 1000;
-	}
 
-	.nav-list {
-		list-style: none;
-		display: flex;
-		justify-content: center;
-		align-items: flex-end;
-		gap: 1.5rem;
-		padding: 0;
-		margin: 0;
-	}
+		.nav-list {
+			list-style: none;
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+			gap: 1.5rem;
+			padding: 0;
+			margin: 0;
 
-	.nav-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+			.nav-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
 
-		:global(.icon) {
-			width: 30px;
-			height: 30px;
-			margin-bottom: 0.5rem;
-		}
+				:global(.icon) {
+					width: 1.875rem;
+					height: 1.875rem;
+					margin-bottom: 0.5rem;
+				}
 
-		a {
-			@include text-xs;
-			text-decoration: none;
-			color: inherit;
-		}
+				a {
+					@include text-xs;
+					text-decoration: none;
+					color: inherit;
+				}
 
-		&.item-active {
+				&.item-active {
 
-			a {
-				@include text-xs-sb;
+					a {
+						@include text-xs-sb;
+					}
+				}
 			}
 		}
 	}
