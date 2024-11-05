@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { page } from '$app/stores';
 
 	import Nav from '$lib/components/nav.svelte';
 
@@ -13,6 +14,21 @@
 	$: user.set(data.user);
 
 	setContext('user', user);
+
+	// Mapping of route paths to custom page names
+	const pageNames: Record<string, string> = {
+		'/': 'Pågående aktiviteter',
+		'/create-activity': 'Skapa aktivitet',
+		'/find-users': 'Hitta användare',
+		'/profile': 'Profilsida',
+	};
+
+	// Reactive statement to update `pageName` based on the current path
+	let pageName = 'Home';
+	$: {
+		const path = $page.url.pathname;
+		pageName = pageNames[path] || 'Sidan hittades inte';
+	}
 </script>
 
 <header>
@@ -27,6 +43,8 @@
 			</div>
 		</div>
 	{/if}
+
+	<h1>{pageName}</h1>
 </header>
 
 <main>
@@ -82,6 +100,16 @@
 
 	:global(.stop-scroll) {
 		overflow-y: hidden;
+	}
+
+	header {
+
+		h1 {
+			@include text-md;
+			margin-top: 3.75rem;
+			margin-bottom: 1.875rem;
+			text-align: center;
+		}
 	}
 
 	header,
