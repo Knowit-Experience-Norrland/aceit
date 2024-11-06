@@ -92,7 +92,7 @@ export const actions: Actions = {
       throw error(500, "Failed to create activity");
     }
 
-    throw redirect(302, `/activity/${result._id.toString()}`);
+    throw redirect(302, `/${result._id.toString()}`);
   }
 };
 
