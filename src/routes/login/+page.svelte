@@ -2,7 +2,7 @@
 	import { enhance } from "$app/forms";
 	import type { ActionData } from "./$types";
 
-	import Button from "$lib/components/button.svelte";
+	// import Button from "$lib/components/button.svelte";
 
 	export let form: ActionData;
 </script>
@@ -29,11 +29,13 @@
 			name="password"
 		/>
 	</div>
-	<Button
-		label="Logga in"
-		buttonClass="button primary"
-		type="submit"
-	/>
+	<!-- <Button -->
+	<!-- 	label="Logga in" -->
+	<!-- 	buttonClass="button primary" -->
+	<!-- 	type="submit" -->
+	<!-- /> -->
+
+  <button type="submit">Logga in</button>
 </form>
 
 {#if form?.error}
