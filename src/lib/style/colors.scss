@@ -1,6 +1,16 @@
-// TODO: Define color variables for the project. 
-//These color variables are based on Tailwind 3.2.4 colors. We may add new colors or remove some as the project evolves.
+// TODO: Define color variables for the project.
 
+// Knowit
+$knowit-background: #05031A;
+$knowit-card-background: #0D0C21;
+$knowit-input-background: #09081D;
+$knowit-text: #FFFFFF;
+$knowit-green: #55D440;
+$knowit-blue: #2F31A2;
+$knowit-blue-hover: #1D1F67;
+$knowit-gray: #6D6D7E;
+
+//These color variables are based on Tailwind 3.2.4 colors. We may add new colors or remove some as the project evolves.
 $slate-50: #f8fafc;
 $slate-100: #f1f5f9;
 $slate-200: #e2e8f0;
@@ -242,12 +252,3 @@ $rose-600: #e11d48;
 $rose-700: #be123c;
 $rose-800: #9f1239;
 $rose-900: #881337;
-
-// Knowit
-$knowit-background: #05031A;
-$knowit-input-background: #09081D;
-$knowit-text: #FFFFFF;
-$knowit-green: #55D440;
-$knowit-blue: #2F31A2;
-$knowit-blue-hover: #1D1F67;
-$knowit-gray: #6D6D7E;

@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { page } from '$app/stores';
+
+	import Nav from '$lib/components/nav.svelte';
+	import PageTitle from '$lib/components/page_title.svelte';
 
 	import type { LayoutServerData } from './$types';
 
@@ -11,6 +15,14 @@
 	$: user.set(data.user);
 
 	setContext('user', user);
+
+	// Mapping of route paths to custom page names
+	const pageTitles = {
+		'/': 'Pågående aktiviteter',
+		'/create-activity': 'Skapa aktivitet',
+		'/find-users': 'Hitta användare',
+		'/profile': 'Profilsida',
+	};
 </script>
 
 <header>
@@ -25,13 +37,19 @@
 			</div>
 		</div>
 	{/if}
+
+	<PageTitle {pageTitles} />
 </header>
 
 <main>
 	<slot />
 </main>
 
-<footer></footer>
+<footer>
+	{#if $user}
+		<Nav />
+	{/if}
+</footer>
 
 <style lang="scss">
 	@import '$lib/style/mixins.scss';
@@ -41,13 +59,17 @@
 		padding: 0;
 		box-sizing: border-box;
 	}
+
 	:global(body) {
+		background: $knowit-background;
+		color: $clr-text;
 		font-family: $font-sans-serif;
-		@include text-sm;
+		@include text-base;
+		-webkit-font-smoothing: antialiased;
+
 		//Media Queries
 		@media screen and (min-width: $media-sm) {
 			// Add styles for small screens and up
-			@include text-base;
 		}
 
 		@media screen and (min-width: $media-md) {
@@ -55,9 +77,49 @@
 		}
 	}
 
+	:global(h1) {
+		@include text-lg;
+	}
+
+	:global(h2) {
+		@include text-md;
+	}
+
+	:global(a) {
+		@include text-md;
+		color: $clr-text;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
 	:global(.stop-scroll) {
 		overflow-y: hidden;
 	}
+
+	:global(.card) {
+		border-radius: 0.5rem;
+		background: $clr-card-bg;
+		margin: 2rem 0;
+		padding: 1.5rem 1.875rem;
+	}
+
+	header,
+	main,
+	footer {
+		width: 100%;
+		max-width: $media-sm;
+		margin: 0 auto;
+		padding: 0 1.25rem;
+
+		//Media Queries
+		@media screen and (min-width: $media-md) {
+			padding: 0;
+		}
+	}
+
 	.top-right {
 		display: flex;
 		gap: 0.5rem;
@@ -70,9 +132,4 @@
 		display: flex;
 		gap: 0.5rem;
 	}
-
-  main {
-    width: calc(100% - 2rem);
-    margin: auto;
-  }
 </style>
