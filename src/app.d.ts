@@ -70,6 +70,10 @@ declare global {
       id: string
     }
 
+    type InputEvent = Event & {
+      currentTarget: EventTarget & HTMLInputElement;
+    };
+
     interface Claims extends Entity { }
     interface User extends GlobalUser, Entity { }
     interface GolfActivity extends GlobalGolfActivity, Entity { }
