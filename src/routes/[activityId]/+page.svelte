@@ -1,49 +1,48 @@
 <script lang="ts">
-import DatePicker from '$lib/components/date_picker.svelte';
-import Modal from '$lib/components/modal.svelte';
-import Input from '$lib/components/input.svelte';
-import type { ActionData, PageServerData } from './$types';
-import { localDateStringWithoutTime } from '$lib/date';
-import { getContext } from 'svelte';
-import type { Writable } from 'svelte/store';
-import { onMount } from 'svelte';
-import RadioButtons from '$lib/components/radio_buttons.svelte';
+	import DatePicker from '$lib/components/date_picker.svelte';
+	import Modal from '$lib/components/modal.svelte';
+	import Input from '$lib/components/input.svelte';
+	import type { ActionData, PageServerData } from './$types';
+	import { localDateStringWithoutTime } from '$lib/date';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
+	import { onMount } from 'svelte';
+	import RadioButtons from '$lib/components/radio_buttons.svelte';
 
 
-const gameTypes: App.RadioButtons.Value[] = [
-	{ value: 'days', label: 'Välj dagar för omgångar' },
-	{ value: 'free', label: 'Fria omgångar' }
-];
+	const gameTypes: App.RadioButtons.Value[] = [
+		{ value: 'days', label: 'Välj dagar för omgångar' },
+		{ value: 'free', label: 'Fria omgångar' }
+	];
 
-export let data: PageServerData;
-export let form: ActionData;
+	export let data: PageServerData;
+	export let form: ActionData;
 
-const user = getContext<Writable<App.User>>('user');
-const isAdmin = data.activity.admin === $user?.id;
-let editMode = false
-let showModal = false;
+	const user = getContext<Writable<App.User>>('user');
+	const isAdmin = data.activity.admin === $user?.id;
+	let editMode = false
+	let showModal = false;
 
-let activityName = data.activity.name;
-let activityKind = data.activity.kind;
-let holes = parseInt(form?.holes || data.activity.holes.length.toString());
-let description = data?.activity.description;
-let members = data.activity.members;
-let isMember = false
-let activityDates: Date[]  = data.activity.holes.filter(hole => hole.date !== undefined).map(hole => new Date(hole.date!) )
+	let activityName = data.activity.name;
+	let activityKind = data.activity.kind;
+	let holes = parseInt(form?.holes || data.activity.holes.length.toString());
+	let description = data?.activity.description;
+	let members = data.activity.members;
+	let isMember = false
+	let activityDates: Date[]  = data.activity.holes.filter(hole => hole.date !== undefined).map(hole => new Date(hole.date!) )
 
-let selectedUsers = members.map(member => member.id);
-let isAllSelected = selectedUsers.length === data.users.length;
-let selectedDates: Date[] = form?.dates ? form.dates.filter(date => date !== undefined).map((date) => new Date(date)) : activityDates;
-let gameType: string = form?.gameType || 'days';
-
-function toggleEditMode() {
-    editMode = !editMode;
-}
-
-
-$: isMember = members.some(member => member.id === $user.id);
-$: holes && updateDatesBasedOnHoles(holes);
+	let selectedUsers = members.map(member => member.id);
+	let isAllSelected = selectedUsers.length === data.users.length;
+	let selectedDates: Date[] = form?.dates ? form.dates.filter(date => date !== undefined).map((date) => new Date(date)) : activityDates;
+	let gameType: string = form?.gameType || 'days';
+	
+	$: isMember = members.some(member => member.id === $user.id);
+	$: holes && updateDatesBasedOnHoles(holes);
 	$: selectedDates && updateHolesBasedOnDates(selectedDates);
+
+	function toggleEditMode() {
+		editMode = !editMode;
+	}
 
 	const updateDatesBasedOnHoles = (holes: number) => {
 		if (holes < selectedDates.length) {
@@ -87,26 +86,24 @@ $: holes && updateDatesBasedOnHoles(holes);
 
 	onMount(generateDates);
 
-
-async function setActivityMembership(action:string) {
-		const response = await fetch(`/api/join?get=${action}`, {
+	async function setActivityMember(action:string) {
+		const response = await fetch(`/api/activity-member?get=${action}`, {
 			method: 'PUT',
-			body: JSON.stringify({ activityId: data.activity.id, user: $user }),
+			body: JSON.stringify({ activityId: data.activity.id }),
 			headers: {
 				'content-type': 'application/json'
 			}
 		});
 
 		const result = await response.json();
-		
-		if (result && result.members) {
-            members = result.members;
-			console.log("result",result);
 			
-		 }
+		if (result && result.members) {
+			members = result.members;
+			}
+
 		return result
-	}
-	
+		
+		}
 
 </script>
 
@@ -134,8 +131,6 @@ async function setActivityMembership(action:string) {
 		    name="description"
 		    value={form?.description || description || ''}
         />
-
-        <!-- <DatePicker bind:selectedDates /> -->
 
         {#each selectedDates as date}
 		    <input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
@@ -182,7 +177,7 @@ async function setActivityMembership(action:string) {
 
 {#if !isAdmin}
 <button on:click={() => { 
-	 setActivityMembership(isMember ? 'leave' : 'join'); 
+	 setActivityMember(isMember ? 'leave' : 'join'); 
  }}>
  	{#if isMember}Lämna tävling{/if}
     {#if !isMember}Gå med i tävling{/if}

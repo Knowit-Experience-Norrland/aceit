@@ -26,7 +26,7 @@ export const insertGolfActivity = async (activity: Database.GolfActivity) => {
   return model;
 }
 
-export const updateGolfActivity = async(activity: Database.GolfActivity) => {
+export const updateGolfActivity = async(activity: App.GolfActivity) => {
   const golfActivity = await GolfActivityModel.findByIdAndUpdate(activity.id, activity, {new:true});
 
   await golfActivity?.validate();
