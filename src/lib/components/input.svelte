@@ -30,6 +30,11 @@
 			padding: 0.5rem;
 			background: $clr-background;
 			color: $clr-text;
+
+			&:focus,
+			&:hover {
+				outline: max(3px, 0.15em) solid rgba(47, 49, 162, 0.5);
+			}
 		}
 	}
 </style>
