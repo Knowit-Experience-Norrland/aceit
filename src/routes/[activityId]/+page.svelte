@@ -1,6 +1,5 @@
 <script lang="ts">
 	import DatePicker from '$lib/components/date_picker.svelte';
-	import Modal from '$lib/components/modal.svelte';
 	import Input from '$lib/components/input.svelte';
 	import type { ActionData, PageServerData } from './$types';
 	import { localDateStringWithoutTime } from '$lib/date';
@@ -21,7 +20,6 @@
 	const user = getContext<Writable<App.User>>('user');
 	const isAdmin = data.activity.admin === $user?.id;
 	let editMode = false
-	let showModal = false;
 
 	let activityName = data.activity.name;
 	let activityKind = data.activity.kind;
@@ -39,6 +37,7 @@
 	$: isMember = members.some(member => member.id === $user.id);
 	$: holes && updateDatesBasedOnHoles(holes);
 	$: selectedDates && updateHolesBasedOnDates(selectedDates);
+
 
 	function toggleEditMode() {
 		editMode = !editMode;
@@ -107,68 +106,67 @@
 
 </script>
 
-<h1>Aktivitetssida</h1>
+<h2>{activityName}</h2>
 
-{#if editMode}
-    <form action="" method="POST" >
-        <Input label="Namn på aktivitet" id="name" type="text" name="name" value={form?.name || activityName} />
-        <RadioButtons
+{#if !editMode}
+ 	<p>Aktivitet: {activityKind}</p>
+    <p>Antal omgångar: {holes}</p>
+    <p>Beskrivning: {description}</p>  
+{:else}
+	<form action="" method="POST" >
+		<Input label="Namn på aktivitet" id="name" type="text" name="name" value={form?.name || activityName} />
+		<RadioButtons
 		legend="Hur ska hålen spelas?"
 		values={gameTypes}
 		bind:selectedValue={gameType}
 		name="gameType"
 	/>
 
-    {#if gameType === 'days'}
+	{#if gameType === 'days'}
 		<DatePicker bind:selectedDates />
 		<input type="hidden" name="holes" value={holes} />
 	{:else}
 		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
 	{/if}
-        <Input
-		    label="Beskrivning"
-		    id="description_input"
-		    name="description"
-		    value={form?.description || description || ''}
-        />
+		<Input
+			label="Beskrivning"
+			id="description_input"
+			name="description"
+			value={form?.description || description || ''}
+		/>
 
-        {#each selectedDates as date}
-		    <input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
-	    {/each}
-        <fieldset>
-            <legend>Lägg till deltagare</legend>
-            <span>
-                <input type="checkbox" id="selected" bind:checked={isAllSelected} on:change={() => {
-                    selectedUsers = isAllSelected ? data.users.map(user => user.id) : [data.activity.admin];
-                }}/>
-                <label for="selected">Välj alla</label>
-            </span>
-            {#each data.users as user}
-                <span>
-                    <input type="checkbox" 
-                        bind:group={selectedUsers} 
-                        name="userIds" 
-                        value={user.id} 
-                        id={user.id} 
-                        checked={members.some(member => member.id === user.id)} 
-                    />
-                    <label for={user.id}>{user.firstName} {user.lastName}</label>
-                </span>
-            {/each}
-        </fieldset>
-        <button type="submit">Spara</button>
-    </form>
+		{#each selectedDates as date}
+			<input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
+		{/each}
+		<fieldset>
+			<legend>Lägg till deltagare</legend>
+			<span>
+				<input type="checkbox" id="selected" bind:checked={isAllSelected} on:change={() => {
+					selectedUsers = isAllSelected ? data.users.map(user => user.id) : [data.activity.admin];
+				}}/>
+				<label for="selected">Välj alla</label>
+			</span>
+			{#each data.users as user}
+				<span>
+					<input type="checkbox" 
+						bind:group={selectedUsers} 
+						name="userIds" 
+						value={user.id} 
+						id={user.id} 
+						checked={members.some(member => member.id === user.id)} 
+					/>
+					<label for={user.id}>{user.firstName} {user.lastName}</label>
+				</span>
+			{/each}
+		</fieldset>
+		<button type="submit">Spara</button>
+	</form>
 
-    {#if form?.error}
-        <p class="error">{form.error}</p>
-    {/if}
-{:else}
-    <p>{activityName}</p>
-    <p>Aktivitet: {activityKind}</p>
-    <p>Antal omgångar: {holes}</p>
-    <p>Beskrivning: {description}</p>  
+	{#if form?.error}
+		<p class="error">{form.error}</p>
+	{/if}
+
 {/if}
-
 
 {#if isAdmin && !editMode}
 	<button on:click={toggleEditMode}>Redigera</button>
@@ -183,20 +181,6 @@
     {#if !isMember}Gå med i tävling{/if}
 </button>
 {/if}
-<!-- <button on:click={() => showModal = true}>Lägg till fler deltagare</button>
-<Modal bind:show={showModal}>
-
-    {#each data.users as user}
-    <span>
-        <input type="checkbox" name="userIds" value={user.id} id={user.id} checked={members.some(member => member.id === user.id)} />
-        <label for={user.id}>{user.firstName} {user.lastName}</label>
-    </span>
-{/each}
-
-<button>Lägg till</button>
-</Modal> -->
-
-
 
 <style lang="scss">
 	h1 {
