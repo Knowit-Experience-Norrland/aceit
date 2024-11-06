@@ -9,16 +9,16 @@
 	{#if legend}
 		<legend>{legend}</legend>
 	{/if}
-	{#each values as value}
+	{#each values as { id, value, label }}
 		<div class="radio">
 			<input
 				type="radio"
 				{name}
 				bind:group={selectedValue}
-				id={value.id || value.value}
-				value={value.value}
+				id={id || value}
+				{value}
 			/>
-			<label for={value.id || value.value}>{value.label}</label>
+			<label for={id || value}>{label}</label>
 		</div>
 	{/each}
 </fieldset>
@@ -27,18 +27,17 @@
 	fieldset {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 1rem;
 		border: none;
 	}
 
 	legend {
-		@include text-base;
-		margin: $m-base;
+		margin: $m-xl;
 	}
 
 	.radio {
 		display: flex;
-    align-items: center;
+		align-items: center;
 		gap: 0.5em;
 	}
 
