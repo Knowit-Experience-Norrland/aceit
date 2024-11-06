@@ -25,11 +25,11 @@
 		gap: 0.5rem;
 
 		input {
-      @include border;
-			border-radius: 0.225rem;
+			@include border;
+			@include border-radius;
 			padding: 0.5rem;
-      background: $clr-background;
-      color: $clr-text;
+			background: $clr-background;
+			color: $clr-text;
 		}
 	}
 </style>
