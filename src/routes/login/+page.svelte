@@ -2,18 +2,18 @@
 	import { enhance } from "$app/forms";
 	import type { ActionData } from "./$types";
 
+	// import Button from "$lib/components/button.svelte";
+
 	export let form: ActionData;
 </script>
 
 <svelte:head>
-	<title>Login</title>
+	<title>Logga in</title>
 </svelte:head>
-
-<h1>Login</h1>
 
 <form method="POST" autocomplete="off" use:enhance>
 	<div>
-		<label for="email_input">Email</label>
+		<label for="email_input">E-postadress</label>
 		<input
 			type="email"
 			id="email_input"
@@ -22,10 +22,20 @@
 		/>
 	</div>
 	<div>
-		<label for="password_input">Password</label>
-		<input type="password" id="password_input" name="password" />
+		<label for="password_input">Lösenord</label>
+		<input
+			type="password"
+			id="password_input"
+			name="password"
+		/>
 	</div>
-	<button>Login</button>
+	<!-- <Button -->
+	<!-- 	label="Logga in" -->
+	<!-- 	buttonClass="button primary" -->
+	<!-- 	type="submit" -->
+	<!-- /> -->
+
+  <button type="submit">Logga in</button>
 </form>
 
 {#if form?.error}

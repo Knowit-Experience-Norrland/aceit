@@ -24,16 +24,17 @@
 		display: grid;
 		gap: 0.5rem;
 
-		label {
-			@include text-sm;
-		}
-
 		input {
-      @include border;
-			border-radius: 0.225rem;
+			@include border;
+			@include border-radius;
 			padding: 0.5rem;
-      background: $clr-background;
-      color: $clr-text;
+			background: $clr-background;
+			color: $clr-text;
+
+			&:focus,
+			&:hover {
+				outline: max(3px, 0.15em) solid rgba(47, 49, 162, 0.5);
+			}
 		}
 	}
 </style>

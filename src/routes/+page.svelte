@@ -8,3 +8,17 @@
 
 <h1>Welcome to SvelteKit {$user?.firstName}</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+
+<div class="card">
+	<h2>Aktivitet A</h2>
+</div>
+
+<div class="card">
+	<h2>Aktivitet B</h2>
+</div>
+
+<style lang="scss">
+	h2 {
+		@include text-lg;
+	}
+</style>
