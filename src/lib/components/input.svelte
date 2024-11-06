@@ -24,10 +24,6 @@
 		display: grid;
 		gap: 0.5rem;
 
-		label {
-			@include text-sm;
-		}
-
 		input {
       @include border;
 			border-radius: 0.225rem;
