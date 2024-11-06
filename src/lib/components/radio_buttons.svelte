@@ -11,13 +11,7 @@
 	{/if}
 	{#each values as { id, value, label }}
 		<div class="radio">
-			<input
-				type="radio"
-				{name}
-				bind:group={selectedValue}
-				id={id || value}
-				{value}
-			/>
+			<input type="radio" {name} bind:group={selectedValue} id={id || value} {value} />
 			<label for={id || value}>{label}</label>
 		</div>
 	{/each}
@@ -41,7 +35,7 @@
 		gap: 0.5em;
 	}
 
-	input[type='radio'] {
+	input {
 		appearance: none;
 		margin: 0;
 
@@ -49,34 +43,39 @@
 		color: $knowit-green;
 		width: 1.15em;
 		height: 1.15em;
-		border: 0.15em solid $knowit-green;
+		border: 1px solid $knowit-green;
 		border-radius: 50%;
 		transform: translateY(-0.075em);
 
 		display: grid;
 		place-content: center;
-	}
 
-	input[type='radio']::before {
-		content: '';
-		width: 0.45em;
-		height: 0.45em;
-		border-radius: 50%;
-		transform: scale(0);
-		transition: 120ms transform ease-in-out;
-		background-color: $clr-background;
-	}
+		&::before {
+			content: '';
+			width: 0.45em;
+			height: 0.45em;
+			border-radius: 50%;
+			transform: scale(0);
+			transition: 120ms transform ease-in-out;
+			background-color: $clr-background;
+		}
 
-	input[type='radio']:checked {
-		background-color: $knowit-green;
-	}
+		&:checked {
+			background-color: $knowit-green;
+		}
 
-	input[type='radio']:checked::before {
-		transform: scale(1);
-	}
+		&:checked::before {
+			transform: scale(1);
+		}
 
-	input[type='radio']:focus {
-		outline: max(2px, 0.15em) solid $clr-text;
-		outline-offset: max(2px, 0.15em);
+		&:focus,
+		&:hover {
+			outline: max(3px, 0.15em) solid rgba(85, 212, 64, 0.5);
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
 	}
 </style>
