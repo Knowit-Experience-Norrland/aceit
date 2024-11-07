@@ -3,6 +3,7 @@
 	import type { ActionData } from "./$types";
 
 	import Input from "$lib/components/input.svelte";
+	import Button from "$lib/components/button.svelte";
 
 	export let form: ActionData;
 </script>
@@ -12,7 +13,7 @@
 </svelte:head>
 
 <form method="POST" autocomplete="off" use:enhance>
-	<div>
+	<div class="input">
 		<Input
 			label="Förnamn"
 			type="text"
@@ -21,7 +22,7 @@
 			value={form?.user?.firstName ?? ""}
 		/>
 	</div>
-	<div>
+	<div class="input">
 		<Input
 			label="Efternamn"
 			type="text"
@@ -30,7 +31,7 @@
 			value={form?.user?.lastName ?? ""}
 		/>
 	</div>
-	<div>
+	<div class="input">
 		<Input
 			label="E-postadress" 
 			type="email"
@@ -39,7 +40,7 @@
 			value={form?.user?.email ?? ""}
 		/>
 	</div>
-	<div>
+	<div class="input">
 		<Input
 			label="Lösenord"
 			type="password"
@@ -47,8 +48,18 @@
 			name="password"
 		/>
 	</div>
-	<button>Register</button>
+	<div class="button">
+		<Button
+			label="Skapa konto"
+			buttonClass="button primary"
+			type="submit"
+		/>
+	</div>
 </form>
+
+<div>
+	<a href="/login">Logga in</a>
+</div>
 
 {#if form?.message}
 	<p class="success">
@@ -61,3 +72,13 @@
 		{form.error}
 	</p>
 {/if}
+
+<style lang="scss">
+	.input {
+		margin-bottom: 1rem;
+	}
+	.button {
+		margin-top: 2.625rem;
+		margin-bottom: 1.5rem;
+	}
+</style>

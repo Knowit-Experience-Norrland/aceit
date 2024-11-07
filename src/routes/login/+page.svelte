@@ -39,7 +39,7 @@
 	</div>
 </form>
 
-<div class="register">
+<div>
 	<a href="/register">Skapa konto</a>
 </div>
 
