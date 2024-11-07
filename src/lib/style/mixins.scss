@@ -49,7 +49,7 @@
 }
 
 // Extra Mini Brödtext Semibold
-@mixin text-xs {
+@mixin text-xs-sb {
 	font-size: 0.688rem;
 	font-style: normal;
 	font-weight: 600;
@@ -63,7 +63,7 @@
 }
 
 @mixin border-radius {
-	border-radius: 0.5rem;
+	border-radius: 0.25rem;
 }
 
 @mixin border {

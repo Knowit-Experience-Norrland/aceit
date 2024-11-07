@@ -70,6 +70,10 @@ declare global {
       id: string
     }
 
+    type InputEvent = Event & {
+      currentTarget: EventTarget & HTMLInputElement;
+    };
+
     interface Claims extends Entity { }
     interface User extends GlobalUser, Entity { }
     interface GolfActivity extends GlobalGolfActivity, Entity { }
@@ -82,14 +86,12 @@ declare global {
       users?: User[]
     }
 
-    namespace RadioButtons {
-      interface Value {
-        value: string;
-        label: string;
-        id?: string;
-        disabled?: boolean;
-      };
-    }
+    interface InputValue {
+      value: string;
+      label: string;
+      id?: string;
+      disabled?: boolean;
+    };
   }
 }
 

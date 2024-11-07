@@ -5,14 +5,20 @@
 	import { localDateStringWithoutTime } from '$lib/date';
 	import { onMount } from 'svelte';
 	import RadioButtons from '$lib/components/radio_buttons.svelte';
-
-	const gameTypes: App.RadioButtons.Value[] = [
-		{ value: 'days', label: 'Välj dagar för omgångar' },
-		{ value: 'free', label: 'Fria omgångar' }
-	];
+	import Checkboxes from '$lib/components/checkboxes.svelte';
 
 	export let data: PageServerData;
 	export let form: ActionData;
+
+	const gameTypes: App.InputValue[] = [
+		{ value: 'days', label: 'Välj dagar för omgångar' },
+		{ value: 'free', label: 'Fria omgångar' }
+	];
+	const users: App.InputValue[] = data.users.map((user) => ({
+		id: user.id,
+		value: user.id,
+		label: `${user.firstName} ${user.lastName}`
+	}));
 
 	let holes = parseInt(form?.holes || '18');
 	let selectedDates: Date[] = form?.dates ? form.dates.map((date) => new Date(date)) : [];
@@ -64,8 +70,6 @@
 	onMount(generateDates);
 </script>
 
-<h1>Skapa aktivitet</h1>
-
 <form action="" method="POST">
 	<Input label="Namn på aktivitet" id="name_input" name="name" value={form?.name || ''} />
 	<RadioButtons
@@ -93,21 +97,13 @@
 		<input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
 	{/each}
 
-	<fieldset>
-		<legend>Lägg till deltagare</legend>
-		{#each data.users as user}
-			<span>
-				<input
-					type="checkbox"
-					name="usersIds"
-					value={user.id}
-					id={user.id}
-					checked={form?.userIds?.includes(user.id)}
-				/>
-				<label for={user.id}>{user.firstName} {user.lastName}</label>
-			</span>
-		{/each}
-	</fieldset>
+	<Checkboxes
+		values={users}
+		name="usersIds"
+		selectedValues={form?.userIds || []}
+		legend="Lägg till deltagare"
+		checkAll
+	/>
 
 	<div class="actions">
 		<button type="submit">Spara aktivitet</button>
@@ -127,12 +123,7 @@
 
 	form {
 		display: grid;
-		gap: 1rem;
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: column;
+		gap: 2rem;
 	}
 
 	input {
