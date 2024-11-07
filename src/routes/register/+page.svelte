@@ -2,32 +2,19 @@
 	import { enhance } from "$app/forms";
 	import type { ActionData } from "./$types";
 
+	import Input from "$lib/components/input.svelte";
+
 	export let form: ActionData;
 </script>
 
 <svelte:head>
-	<title>Register</title>
+	<title>Skapa konto</title>
 </svelte:head>
-
-<h1>Register</h1>
 
 <form method="POST" autocomplete="off" use:enhance>
 	<div>
-		<label for="email_input">Email</label>
-		<input
-			type="email"
-			id="email_input"
-			name="email"
-			value={form?.user?.email ?? ""}
-		/>
-	</div>
-	<div>
-		<label for="password_input">Password</label>
-		<input type="password" id="password_input" name="password" />
-	</div>
-	<div>
-		<label for="firstname_input">Firstname</label>
-		<input
+		<Input
+			label="Förnamn"
 			type="text"
 			id="firstname_input"
 			name="firstname"
@@ -35,12 +22,29 @@
 		/>
 	</div>
 	<div>
-		<label for="lastname_input">Lastname</label>
-		<input
+		<Input
+			label="Efternamn"
 			type="text"
 			id="lastname_input"
 			name="lastname"
 			value={form?.user?.lastName ?? ""}
+		/>
+	</div>
+	<div>
+		<Input
+			label="E-postadress" 
+			type="email"
+			id="email_input"
+			name="email"
+			value={form?.user?.email ?? ""}
+		/>
+	</div>
+	<div>
+		<Input
+			label="Lösenord"
+			type="password"
+			id="password_input"
+			name="password"
 		/>
 	</div>
 	<button>Register</button>
