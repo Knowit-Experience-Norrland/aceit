@@ -2,7 +2,8 @@
 	import { enhance } from "$app/forms";
 	import type { ActionData } from "./$types";
 
-	// import Button from "$lib/components/button.svelte";
+	import Input from '$lib/components/input.svelte';
+	import Button from "$lib/components/button.svelte";
 
 	export let form: ActionData;
 </script>
@@ -12,34 +13,48 @@
 </svelte:head>
 
 <form method="POST" autocomplete="off" use:enhance>
-	<div>
-		<label for="email_input">E-postadress</label>
-		<input
+	<div class="input">
+		<Input
+			label="E-postadress"
 			type="email"
 			id="email_input"
 			name="email"
 			value={form?.email ?? ""}
 		/>
 	</div>
-	<div>
-		<label for="password_input">Lösenord</label>
-		<input
+	<div class="input">
+		<Input
+			label="Lösenord"
 			type="password"
 			id="password_input"
 			name="password"
 		/>
 	</div>
-	<!-- <Button -->
-	<!-- 	label="Logga in" -->
-	<!-- 	buttonClass="button primary" -->
-	<!-- 	type="submit" -->
-	<!-- /> -->
-
-  <button type="submit">Logga in</button>
+	<div class="button">
+		<Button
+			label="Logga in"
+			buttonClass="button primary"
+			type="submit"
+		/>
+	</div>
 </form>
+
+<div class="register">
+	<a href="/register">Skapa konto</a>
+</div>
 
 {#if form?.error}
 	<p class="error">
 		{form.error}
 	</p>
 {/if}
+
+<style lang="scss">
+	.input {
+		margin-bottom: 1rem;
+	}
+	.button {
+		margin-top: 2.625rem;
+		margin-bottom: 1.5rem;
+	}
+</style>
