@@ -22,6 +22,7 @@
 		'/create-activity': 'Skapa aktivitet',
 		'/find-users': 'Hitta användare',
 		'/profile': 'Profilsida',
+		'/login': 'Logga in',
 	};
 </script>
 

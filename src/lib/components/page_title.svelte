@@ -8,9 +8,14 @@
 		const path = $page.url.pathname;
 		return pageTitles[path] || 'Page Not Found';
 	});
+
+	const computedClass = derived(pageTitle, ($pageTitle) => {
+		if ($pageTitle === 'Logga in') return 'login-title';
+		return 'default-title';
+	});
 </script>
 
-<h1>{$pageTitle}</h1>
+<h1 class={$computedClass}>{$pageTitle}</h1>
 
 <style lang="scss">
 	h1 {
@@ -18,5 +23,11 @@
 		margin-top: 3.75rem;
 		margin-bottom: 1.875rem;
 		text-align: center;
+
+		&.login-title {
+			@include text-lg;
+			margin-top: 7.125rem;
+			margin-bottom: 2rem;
+		}
 	}
 </style>
