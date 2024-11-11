@@ -7,17 +7,18 @@
 	import type { Writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import RadioButtons from '$lib/components/radio_buttons.svelte';
+	import Checkboxes from '$lib/components/checkboxes.svelte';
+	import { sortUsers } from '$lib/sort';
 
-
-	const gameTypes: App.RadioButtons.Value[] = [
+	const gameTypes: App.InputValue[] = [
 		{ value: 'days', label: 'Välj dagar för omgångar' },
 		{ value: 'free', label: 'Fria omgångar' }
 	];
 
 	export let data: PageServerData;
 	export let form: ActionData;
-
 	const user = getContext<Writable<App.User>>('user');
+
 	const isAdmin = data.activity.admin === $user?.id;
 	let editMode = false
 
@@ -29,10 +30,20 @@
 	let isMember = false
 	let activityDates: Date[]  = data.activity.holes.filter(hole => hole.date !== undefined).map(hole => new Date(hole.date!) )
 
+	if(form?.error){
+		editMode = true
+	}
+
 	let selectedUsers = members.map(member => member.id);
-	let isAllSelected = selectedUsers.length === data.users.length;
 	let selectedDates: Date[] = form?.dates ? form.dates.filter(date => date !== undefined).map((date) => new Date(date)) : activityDates;
 	let gameType: string = form?.gameType || 'days';
+
+	const users: App.InputValue[] = sortUsers(data.users.map((user) => ({
+		id: user.id,
+		value: user.id,
+		label: `${user.firstName} ${user.lastName}`
+	})), data.activity.admin);
+	
 	
 	$: isMember = members.some(member => member.id === $user.id);
 	$: holes && updateDatesBasedOnHoles(holes);
@@ -138,28 +149,20 @@
 		{#each selectedDates as date}
 			<input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
 		{/each}
-		<fieldset>
-			<legend>Lägg till deltagare</legend>
-			<span>
-				<input type="checkbox" id="selected" bind:checked={isAllSelected} on:change={() => {
-					selectedUsers = isAllSelected ? data.users.map(user => user.id) : [data.activity.admin];
-				}}/>
-				<label for="selected">Välj alla</label>
-			</span>
-			{#each data.users as user}
-				<span>
-					<input type="checkbox" 
-						bind:group={selectedUsers} 
-						name="userIds" 
-						value={user.id} 
-						id={user.id} 
-						checked={members.some(member => member.id === user.id)} 
-					/>
-					<label for={user.id}>{user.firstName} {user.lastName}</label>
-				</span>
-			{/each}
-		</fieldset>
-		<button type="submit">Spara</button>
+
+		<Checkboxes
+		values={users}
+		name="userIds"
+		selectedValues={selectedUsers}
+		legend="Lägg till deltagare"
+		checkAll
+		disabledValues={[$user.id]}
+	/>
+
+		<div class="actions">
+			<button type="submit">Spara aktivitet</button>
+			<button>Avbryt</button>
+		</div>
 	</form>
 
 	{#if form?.error}
@@ -183,19 +186,9 @@
 {/if}
 
 <style lang="scss">
-	h1 {
-		@include text-lg;
-		margin: $m-lg;
-	}
-
 	form {
 		display: grid;
 		gap: 1rem;
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: column;
 	}
 
 	input {

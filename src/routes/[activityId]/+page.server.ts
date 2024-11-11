@@ -44,7 +44,8 @@ default: async({  locals, request, params }) => {
     const dates = dateStrings.map(date => new Date(date));
     const start = dates[0];
     const end = dates.length > 1 && dates[dates.length - 1] || undefined; 
-    
+
+    userIds.push(locals.claims?.id || '');
 
     if (!name) {
         return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings,  error: "Name is required" });

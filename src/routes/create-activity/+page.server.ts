@@ -28,6 +28,8 @@ export const actions: Actions = {
     const start = dates[0];
     const end = dates.length > 1 && dates[dates.length - 1] || undefined;
 
+    userIds.push(locals.claims?.id || '');
+
     if (!name) {
       return fail(400, { name, holes, gameType, userIds, description, dates: dateStrings, error: "Name is required" });
     }
@@ -84,7 +86,7 @@ export const actions: Actions = {
       members: golfUserMeta,
     };
 
-    console.log(activity);
+
 
     const result = await insertGolfActivity(activity);
 

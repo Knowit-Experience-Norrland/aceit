@@ -4,21 +4,28 @@
 	import type { ActionData, PageServerData } from './$types';
 	import { localDateStringWithoutTime } from '$lib/date';
 	import { onMount } from 'svelte';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 	import RadioButtons from '$lib/components/radio_buttons.svelte';
 	import Checkboxes from '$lib/components/checkboxes.svelte';
+	import { sortUsers } from '$lib/sort';
 
 	export let data: PageServerData;
 	export let form: ActionData;
+	const user = getContext<Writable<App.User>>('user');
 
 	const gameTypes: App.InputValue[] = [
 		{ value: 'days', label: 'Välj dagar för omgångar' },
 		{ value: 'free', label: 'Fria omgångar' }
 	];
-	const users: App.InputValue[] = data.users.map((user) => ({
+	const users: App.InputValue[] = sortUsers(data.users.map((user) => ({
 		id: user.id,
 		value: user.id,
-		label: `${user.firstName} ${user.lastName}`
-	}));
+		label: `${user.firstName} ${user.lastName}`,
+	})), $user.id);
+
+	
+	let selectedUsers = form?.userIds || [$user.id];
 
 	let holes = parseInt(form?.holes || '18');
 	let selectedDates: Date[] = form?.dates ? form.dates.map((date) => new Date(date)) : [];
@@ -100,9 +107,10 @@
 	<Checkboxes
 		values={users}
 		name="usersIds"
-		selectedValues={form?.userIds || []}
+		selectedValues={selectedUsers}
 		legend="Lägg till deltagare"
 		checkAll
+		disabledValues={[$user.id]}
 	/>
 
 	<div class="actions">

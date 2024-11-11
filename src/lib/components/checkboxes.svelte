@@ -1,51 +1,44 @@
 <script lang="ts">
-	import RadioButtons from './radio_buttons.svelte';
-
 	export let values: App.InputValue[] = [];
 	export let name: string = '';
-	export let selectedValues: string[] = [];
+	export let selectedValues: string[] ;
 	export let legend: string | undefined = undefined;
 	export let checkAll: boolean = false;
+	export let disabledValues: string[]
+	
+	$: isAllSelected = selectedValues.length === values.length;
 
-	let radioValue = selectedValues.length === values.length ? 'all' : '';
-
-	$: if (radioValue === 'all') {
-		selectedValues = values.map((v) => v.id || v.value);
+	function toggleValues() {
+		if (isAllSelected) {
+			selectedValues = disabledValues;
+		} else {
+			selectedValues = values.map((v) => v.id || v.value); 
+		}
 	}
 
-	const toggleValue = (value: string) => {
-		if (selectedValues.includes(value)) {
-			selectedValues = selectedValues.filter((v) => v !== value);
-		} else {
-			selectedValues = [...selectedValues, value];
-		}
-
-		if (checkAll && selectedValues.length < values.length) {
-			radioValue = '';
-		}
-	};
 </script>
 
 <fieldset>
 	{#if legend}
 		<legend>{legend}</legend>
 	{/if}
-
-	{#if checkAll}
-		<RadioButtons
-			bind:selectedValue={radioValue}
-			values={[{ value: 'all', label: 'Markera alla' }]}
-		/>
+	{#if checkAll} 
+		<span class="checkbox">
+			<input type="checkbox" name="all" bind:checked={isAllSelected} id="all" on:change={toggleValues}/>
+			<label for="all">Välj alla</label>
+		</span>
 	{/if}
+
 	{#each values as { value, label, id }}
 		<span class="checkbox">
 			<input
 				type="checkbox"
-				on:change={() => toggleValue(id || '')}
 				{name}
 				{value}
 				{id}
-				checked={selectedValues.includes(id || '')}
+				checked={ selectedValues.includes(id || '')}
+				disabled={disabledValues.includes(id || '')}
+				bind:group={selectedValues}
 			/>
 			<label for={id}>{label}</label>
 		</span>
