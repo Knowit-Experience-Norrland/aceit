@@ -1,30 +1,35 @@
 <script lang="ts">
 	export let values: App.InputValue[] = [];
 	export let name: string = '';
-	export let selectedValues: string[] ;
+	export let selectedValues: string[];
 	export let legend: string | undefined = undefined;
 	export let checkAll: boolean = false;
-	export let disabledValues: string[]
-	
+	export let disabledValues: string[];
+
 	$: isAllSelected = selectedValues.length === values.length;
 
 	function toggleValues() {
 		if (isAllSelected) {
 			selectedValues = disabledValues;
 		} else {
-			selectedValues = values.map((v) => v.id || v.value); 
+			selectedValues = values.map((v) => v.id || v.value);
 		}
 	}
-
 </script>
 
 <fieldset>
 	{#if legend}
 		<legend>{legend}</legend>
 	{/if}
-	{#if checkAll} 
+	{#if checkAll}
 		<span class="checkbox">
-			<input type="checkbox" name="all" bind:checked={isAllSelected} id="all" on:change={toggleValues}/>
+			<input
+				type="checkbox"
+				name="all"
+				bind:checked={isAllSelected}
+				id="all"
+				on:change={toggleValues}
+			/>
 			<label for="all">Välj alla</label>
 		</span>
 	{/if}
@@ -36,7 +41,7 @@
 				{name}
 				{value}
 				{id}
-				checked={ selectedValues.includes(id || '')}
+				checked={selectedValues.includes(id || '')}
 				disabled={disabledValues.includes(id || '')}
 				bind:group={selectedValues}
 			/>
@@ -99,12 +104,13 @@
 			transform: scale(1);
 		}
 
-		&:focus, &:hover {
+		&:focus,
+		&:hover {
 			outline: max(3px, 0.15em) solid rgba(85, 212, 64, 0.5);
 		}
 
 		&:disabled {
-      opacity: 0.5;
+			opacity: 0.5;
 			cursor: not-allowed;
 		}
 	}

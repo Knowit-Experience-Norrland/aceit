@@ -54,10 +54,6 @@ default: async({  locals, request, params }) => {
     if (!holes) {
         return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings,  error: "Holes are required" });
       }
-
-    if (!description) {
-        return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings, error: "Description is required" });
-      }
   
     if (!userIds) {
         return fail(400, { name, holes, gameType, description, userIds, dates: dateStrings, error: "Users are required" });
