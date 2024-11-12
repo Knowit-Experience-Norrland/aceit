@@ -10,7 +10,6 @@
 
 	function handleClick(event: Event) {
 		if (type !== 'submit' && !disabled) {
-			// Dispatch custom event only if it's not a submit button
 			dispatch('click');
 			if (preventDefault) {
 				event?.preventDefault();

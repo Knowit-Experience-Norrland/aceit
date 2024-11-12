@@ -12,7 +12,7 @@
 
 	const menuItems = [
 		{ name: 'Hem', path: '/', icon: IconHome, iconActive: IconHomeActive },
-		{ name: 'Ny tävling', path: '/create-activity', icon: IconPlusCircle, iconActive: IconPlusCircleActive },
+		{ name: 'Ny aktivitet', path: '/create-activity', icon: IconPlusCircle, iconActive: IconPlusCircleActive },
 		{ name: 'Hitta användare', path: '/find-users', icon: IconMagnifier, iconActive: IconMagnifierActive },
 		{ name: 'Min profil', path: '/profile', icon: IconProfile, iconActive: IconProfileActive }
 	];
@@ -24,11 +24,13 @@
 	<ul class="nav-list">
 		{#each menuItems as item}
 			<li class="nav-item {activePath === item.path ? 'item-active' : ''}">
-				<svelte:component
-					this={activePath === item.path ? item.iconActive : item.icon}
-					iconClass="icon {activePath === item.path ? 'icon-active' : ''}"
-				/>
-				<a href={item.path}>{item.name}</a>
+				<a href={item.path} class="nav-link">
+					<svelte:component
+						this={activePath === item.path ? item.iconActive : item.icon}
+						iconClass="icon {activePath === item.path ? 'icon-active' : ''}"
+					/>
+					<span>{item.name}</span>
+				</a>
 			</li>
 		{/each}
 	</ul>
@@ -49,7 +51,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: flex-end;
-			gap: 1.5rem;
+			gap: 0.5rem;
 			padding: 0;
 			margin: 0;
 
@@ -62,6 +64,7 @@
 					@include text-xs;
 					text-decoration: none;
 					color: inherit;
+					text-align: center
 				}
 
 				&.item-active {

@@ -23,6 +23,7 @@
 		'/find-users': 'Hitta användare',
 		'/profile': 'Profilsida',
 		'/login': 'Logga in',
+		'/register': 'Skapa konto',
 	};
 </script>
 
@@ -90,6 +91,20 @@
 		@include text-md;
 		color: $clr-text;
 		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	:global(.button-link) {
+		background: none;
+		border: none;
+		color: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+		font: inherit;
+		padding: 0;
 
 		&:hover {
 			text-decoration: none;
