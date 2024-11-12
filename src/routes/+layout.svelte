@@ -97,6 +97,20 @@
 		}
 	}
 
+	:global(.button-link) {
+		background: none;
+		border: none;
+		color: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+		font: inherit;
+		padding: 0;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
 	:global(.stop-scroll) {
 		overflow-y: hidden;
 	}

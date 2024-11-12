@@ -22,7 +22,7 @@
 	<h2>{$user?.firstName} {$user?.lastName}</h2>
 	<p>{$user?.email}</p>
 	<form action="/logout" method="POST">
-		<button class="logout-link" type="submit">Logga ut</button>
+		<button class="button-link" type="submit">Logga ut</button>
 	</form>
 </div>
 
@@ -40,20 +40,6 @@
 		h2,
 		p {
 			margin-bottom: 0.5rem;
-		}
-
-		.logout-link {
-			background: none;
-			border: none;
-			color: inherit;
-			text-decoration: underline;
-			cursor: pointer;
-			font: inherit;
-			padding: 0;
-
-			&:hover {
-				text-decoration: none;
-			}
 		}
 	}
 
