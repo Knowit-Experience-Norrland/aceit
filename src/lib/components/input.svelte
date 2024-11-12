@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let name: string;
 	export let id: string;
-	export let value: string | number;
-	export let type: 'text' | 'number' = 'text';
+	export let value: string | number | undefined = "";
+	export let type: 'text' | 'number' | 'email' | 'password' = 'text';
 	export let placeholder: string = '';
 	export let label: string | undefined = undefined;
 	export let disabled: boolean = false;
@@ -14,6 +14,10 @@
 	{/if}
 	{#if type === 'number'}
 		<input {name} {id} type="number" {placeholder} bind:value {disabled} />
+	{:else if type === 'email'}
+		<input {name} {id} type="email" {placeholder} bind:value {disabled} />
+	{:else if type === 'password'}
+		<input {name} {id} type="password" {placeholder} bind:value {disabled} />
 	{:else}
 		<input {name} {id} type="text" {placeholder} bind:value {disabled} />
 	{/if}
