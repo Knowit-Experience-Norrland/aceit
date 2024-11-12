@@ -1,8 +1,11 @@
 <script lang="ts">
-	import IconStar from '$lib/components/icon_star.svelte';
-</script>
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 
-<h1>Profilsida</h1>
+	import IconStar from '$lib/components/icon_star.svelte';
+
+	const user = getContext<Writable<App.User>>('user');
+</script>
 
 <div class="card">
 	<IconStar
@@ -11,8 +14,8 @@
 		fill="icon"
 	/>
  
-	<h2>Namn Namnsson</h2>
-	<p>namn.namnsson@knowit.se</p>
+	<h2>{$user?.firstName} {$user?.lastName}</h2>
+	<p>{$user?.email}</p>
 	<form action="/logout" method="POST">
 		<button type="submit">Logout</button>
 	</form>
