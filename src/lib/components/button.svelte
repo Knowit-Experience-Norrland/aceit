@@ -3,13 +3,17 @@
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let disabled: boolean = false;
 	export let buttonClass: string = 'primary';
+	export let preventDefault: boolean = false; 
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
-	function handleClick() {
+	function handleClick(event: Event) {
 		if (type !== 'submit' && !disabled) {
 			dispatch('click');
+			if (preventDefault) {
+				event?.preventDefault();
+			}
 		}
 	}
 </script>

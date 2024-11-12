@@ -1,51 +1,49 @@
 <script lang="ts">
-	import RadioButtons from './radio_buttons.svelte';
-
 	export let values: App.InputValue[] = [];
 	export let name: string = '';
-	export let selectedValues: string[] = [];
+	export let selectedValues: string[];
 	export let legend: string | undefined = undefined;
 	export let checkAll: boolean = false;
+	export let disabledValues: string[];
 
-	let radioValue = selectedValues.length === values.length ? 'all' : '';
+	$: isAllSelected = selectedValues.length === values.length;
 
-	$: if (radioValue === 'all') {
-		selectedValues = values.map((v) => v.id || v.value);
-	}
-
-	const toggleValue = (value: string) => {
-		if (selectedValues.includes(value)) {
-			selectedValues = selectedValues.filter((v) => v !== value);
+	function toggleValues() {
+		if (isAllSelected) {
+			selectedValues = disabledValues;
 		} else {
-			selectedValues = [...selectedValues, value];
+			selectedValues = values.map((v) => v.id || v.value);
 		}
-
-		if (checkAll && selectedValues.length < values.length) {
-			radioValue = '';
-		}
-	};
+	}
 </script>
 
 <fieldset>
 	{#if legend}
 		<legend>{legend}</legend>
 	{/if}
-
 	{#if checkAll}
-		<RadioButtons
-			bind:selectedValue={radioValue}
-			values={[{ value: 'all', label: 'Markera alla' }]}
-		/>
+		<span class="checkbox">
+			<input
+				type="checkbox"
+				name="all"
+				bind:checked={isAllSelected}
+				id="all"
+				on:change={toggleValues}
+			/>
+			<label for="all">Välj alla</label>
+		</span>
 	{/if}
+
 	{#each values as { value, label, id }}
 		<span class="checkbox">
 			<input
 				type="checkbox"
-				on:change={() => toggleValue(id || '')}
 				{name}
 				{value}
 				{id}
 				checked={selectedValues.includes(id || '')}
+				disabled={disabledValues.includes(id || '')}
+				bind:group={selectedValues}
 			/>
 			<label for={id}>{label}</label>
 		</span>
@@ -106,12 +104,13 @@
 			transform: scale(1);
 		}
 
-		&:focus, &:hover {
+		&:focus,
+		&:hover {
 			outline: max(3px, 0.15em) solid rgba(85, 212, 64, 0.5);
 		}
 
 		&:disabled {
-      opacity: 0.5;
+			opacity: 0.5;
 			cursor: not-allowed;
 		}
 	}
