@@ -4,16 +4,21 @@
 
 <h1>Profilsida</h1>
 
-<div class="bg-box">
-	<IconStar width="32" height="32" fill="var(--knowit-green)" />
-
+<div class="card">
+	<IconStar
+		width="32"
+		height="32"
+		fill="icon"
+	/>
+ 
 	<h2>Namn Namnsson</h2>
 	<p>namn.namnsson@knowit.se</p>
-	<a href="/target-page">Logga ut</a>
+	<form action="/logout" method="POST">
+		<button type="submit">Logout</button>
+	</form>
+	
 </div>
 
 <style lang="scss">
-	:root {
-		--knowit-green: #{$knowit-green};
-	}
+
 </style>
