@@ -23,6 +23,7 @@
 		'/find-users': 'Hitta användare',
 		'/profile': 'Profilsida',
 		'/login': 'Logga in',
+		'/register': 'Skapa konto',
 	};
 </script>
 

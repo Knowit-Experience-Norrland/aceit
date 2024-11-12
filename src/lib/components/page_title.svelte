@@ -11,6 +11,7 @@
 
 	const computedClass = derived(pageTitle, ($pageTitle) => {
 		if ($pageTitle === 'Logga in') return 'login-title';
+		if ($pageTitle === 'Skapa konto') return 'login-title';
 		return 'default-title';
 	});
 </script>
