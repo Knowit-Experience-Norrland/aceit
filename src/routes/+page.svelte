@@ -10,9 +10,6 @@
 	<title>Pågående aktiviteter</title>
 </svelte:head>
 
-<h1>Welcome to SvelteKit {$user?.firstName}</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
 <div class="card">
 	<h2>Aktivitet A</h2>
 </div>
