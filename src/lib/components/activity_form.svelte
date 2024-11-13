@@ -7,6 +7,7 @@
 	import { localDateStringWithoutTime } from '$lib/date';
 	import Checkboxes from './checkboxes.svelte';
 	import Button from './button.svelte';
+	import Textarea from './textarea.svelte';
 
 	export let nameValue: string;
 	export let gameType: string;
@@ -76,6 +77,9 @@
 	onMount(generateDates);
 </script>
 
+<div class="card">
+
+
 <form action="" method="POST">
 	<Input label="Namn på aktivitet" id="name" type="text" name="name" value={nameValue} />
 	<RadioButtons
@@ -91,7 +95,7 @@
 	{:else}
 		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
 	{/if}
-	    <Input label="Beskrivning" id="description_input" name="description" value={description} />
+		<Textarea label="Beskrivning" id="description_input" name="description" value={description} />
 
 	{#each selectedDates as date}
 		<input type="hidden" name="dates" value={localDateStringWithoutTime(date)} />
@@ -125,7 +129,7 @@
 {#if formError}
 	<p class="error">{formError}</p>
 {/if}
-
+</div>
 <style lang="scss">
 	form {
 		display: grid;

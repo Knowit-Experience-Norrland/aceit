@@ -121,6 +121,21 @@
 		margin: 2rem 0;
 		padding: 1.5rem 1.875rem;
 	}
+	
+
+	:global(.card *::-webkit-scrollbar) {
+		width: 8px;
+	}
+
+	:global(.card *::-webkit-scrollbar-track) {
+		background-color: $knowit-off-white;
+		border-radius: 4px;
+	}
+
+	:global(.card *::-webkit-scrollbar-thumb) {
+		background-color: $knowit-green; 
+		border-radius: 4px;
+	}
 
 	header,
 	main,
