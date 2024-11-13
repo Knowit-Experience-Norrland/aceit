@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let name: string;
 	export let id: string;
-	export let rows: number = 6;
+	export let rows: number = 4;
 	export let cols: number = 50;
 	export let value: string | number | undefined = '';
 	export let placeholder: string = '';
@@ -39,6 +39,10 @@
 			&:hover {
 				outline: max(3px, 0.15em) solid rgba(47, 49, 162, 0.5);
 			}
+		}	
+
+		::-webkit-scrollbar-track {
+			margin: 2px;
 		}
 	}
 </style>

@@ -77,6 +77,9 @@
 	onMount(generateDates);
 </script>
 
+<div class="card">
+
+
 <form action="" method="POST">
 	<Input label="Namn på aktivitet" id="name" type="text" name="name" value={nameValue} />
 	<RadioButtons
@@ -126,7 +129,7 @@
 {#if formError}
 	<p class="error">{formError}</p>
 {/if}
-
+</div>
 <style lang="scss">
 	form {
 		display: grid;
