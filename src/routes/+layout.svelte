@@ -2,7 +2,6 @@
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
-
 	import Nav from '$lib/components/nav.svelte';
 	import PageTitle from '$lib/components/page_title.svelte';
 
@@ -16,7 +15,7 @@
 
 	setContext('user', user);
 
-	// Mapping of route paths to custom page names
+
 	const pageTitles = {
 		'/': 'Pågående aktiviteter',
 		'/create-activity': 'Skapa aktivitet',
