@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Writable } from 'svelte/store';
-
+	import type { PageServerData } from './$types';
 	import IconStar from '$lib/components/icon_star.svelte';
 
-	const user = getContext<Writable<App.User>>('user');
+	export let data: PageServerData;
+
+	const { user } = data;
 </script>
 
 <svelte:head>
-	<title>Min profil</title>
+	<title>Profile: {user.firstName} {user.lastName}</title>
 </svelte:head>
 
 <div class="card profile">
@@ -19,11 +19,8 @@
 			fill="#55D440"
 		/>
 	</div>
-	<h2>{$user?.firstName} {$user?.lastName}</h2>
-	<p>{$user?.email}</p>
-	<form action="/logout" method="POST">
-		<button class="logout-link" type="submit">Logga ut</button>
-	</form>
+	<h2>{user.firstName} {user.lastName}</h2>
+	<p>{user.email}</p>
 </div>
 
 <style lang="scss">
@@ -34,20 +31,6 @@
 
 		&-icon {
 			margin-bottom: 0.5rem;
-		}
-
-		.logout-link {
-			background: none;
-			border: none;
-			color: inherit;
-			text-decoration: underline;
-			cursor: pointer;
-			font: inherit;
-			padding: 0;
-
-			&:hover {
-				text-decoration: none;
-			}
 		}
 	}
 </style>
