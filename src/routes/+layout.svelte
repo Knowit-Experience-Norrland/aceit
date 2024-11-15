@@ -27,18 +27,6 @@
 </script>
 
 <header>
-	{#if $user}
-		<div class="top-right">
-			<a href="/create-activity">Create Activity</a>
-			<div class="profile">
-				<span>{$user?.firstName}</span>
-				<form action="/logout" method="POST">
-					<button type="submit">Logout</button>
-				</form>
-			</div>
-		</div>
-	{/if}
-
 	<PageTitle {pageTitles} />
 </header>
 
@@ -148,18 +136,5 @@
 		@media screen and (min-width: $media-md) {
 			padding: 0;
 		}
-	}
-
-	.top-right {
-		display: flex;
-		gap: 0.5rem;
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-	}
-
-	.profile {
-		display: flex;
-		gap: 0.5rem;
 	}
 </style>

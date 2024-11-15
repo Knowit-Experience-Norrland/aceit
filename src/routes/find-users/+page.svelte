@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
+
 	import IconStar from '$lib/components/icon_star.svelte';
+	import Input from "$lib/components/input.svelte";
 
 	export let data: PageServerData;
 
@@ -16,12 +18,15 @@
 </svelte:head>
 
 <div class="card">
-	<input
-		type="text"
-		placeholder="Sök efter namn"
-		bind:value={searchTerm}
-		class="search-input"
-	/>
+	<div class="input">
+		<Input
+			id="search-input"
+			name="searchTerm"
+			type="search"
+			placeholder="Sök användare..."
+			bind:value={searchTerm}
+		/>
+	</div>
 
 	{#each filteredUsers as user}
 		<div class="card-user">
@@ -31,7 +36,11 @@
 					height="23"
 					fill="#55D440"
 				/>
-				<p class="card-user-name">{user.firstName} {user.lastName}</p>
+				<span class="card-user-name">
+					<a href={`/profile/${user.id}`}>
+						{user.firstName} {user.lastName}
+					</a>
+				</span>
 			</div>
 			<div class="row">
 				<p class="card-user-email">{user.email}</p>
@@ -46,32 +55,31 @@
 
 <style lang="scss">
 
-	.search-input {
-		width: 100%;
-		padding: 0.5rem;
-		margin-bottom: 1rem;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-	}
+	.card {
 
-	.card-user {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		margin-bottom: 1.25rem;
+		.input {
+			margin-bottom: 2rem;
+		}
 
-		.row {
+		&-user {
 			display: flex;
-			align-items: center;
-		}
+			flex-direction: column;
+			gap: 0.5rem;
+			margin-bottom: 1.25rem;
 
-		&-name {
-			@include text-base-sb;
-			padding-left: 0.5rem;
-		}
+			.row {
+				display: flex;
+				align-items: center;
+			}
 
-		&-email {
-			padding-left: calc(1.5rem + 8px);
+			&-name {
+				@include text-base-sb;
+				padding-left: 0.5rem;
+			}
+
+			&-email {
+				padding-left: calc(1.5rem + 8px);
+			}
 		}
 	}
 </style>
