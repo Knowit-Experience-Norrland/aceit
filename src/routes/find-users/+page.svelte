@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
+	import IconStar from '$lib/components/icon_star.svelte';
 
 	export let data: PageServerData;
 
@@ -23,9 +24,18 @@
 	/>
 
 	{#each filteredUsers as user}
-		<div class="user-entry">
-			<p><strong>{user.firstName} {user.lastName}</strong></p>
-			<p class="email">{user.email}</p>
+		<div class="card-user">
+			<div class="row">
+				<IconStar
+					width="23"
+					height="23"
+					fill="#55D440"
+				/>
+				<p class="card-user-name">{user.firstName} {user.lastName}</p>
+			</div>
+			<div class="row">
+				<p class="card-user-email">{user.email}</p>
+			</div>
 		</div>
 	{/each}
 
@@ -42,5 +52,26 @@
 		margin-bottom: 1rem;
 		border: 1px solid #ccc;
 		border-radius: 4px;
+	}
+
+	.card-user {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 1.25rem;
+
+		.row {
+			display: flex;
+			align-items: center;
+		}
+
+		&-name {
+			@include text-base-sb;
+			padding-left: 0.5rem;
+		}
+
+		&-email {
+			padding-left: calc(1.5rem + 8px);
+		}
 	}
 </style>
