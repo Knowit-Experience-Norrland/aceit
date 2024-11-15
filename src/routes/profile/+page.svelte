@@ -12,13 +12,13 @@
 </svelte:head>
 
 <div class="card profile">
-	<IconStar
-		width="32"
-		height="32"
-		fill="fill"
-		iconClass="icon-star"
-	/>
- 
+	<div class="profile-icon">
+		<IconStar
+			width="32"
+			height="32"
+			fill="#55D440"
+		/>
+	</div>
 	<h2>{$user?.firstName} {$user?.lastName}</h2>
 	<p>{$user?.email}</p>
 	<form action="/logout" method="POST">
@@ -26,19 +26,13 @@
 	</form>
 </div>
 
-<div class="card">
-	<h2>Aktivitet A</h2>
-</div>
-
-<div class="card">
-	<h2>Aktivitet B</h2>
-</div>
-
 <style lang="scss">
 	.profile {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 
-		h2,
-		p {
+		&-icon {
 			margin-bottom: 0.5rem;
 		}
 
@@ -55,10 +49,5 @@
 				text-decoration: none;
 			}
 		}
-	}
-
-	:global(.icon-star) {
-		margin-bottom: 1rem;
-		fill: $knowit-green;
 	}
 </style>

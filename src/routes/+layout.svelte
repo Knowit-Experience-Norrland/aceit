@@ -2,7 +2,6 @@
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
-
 	import Nav from '$lib/components/nav.svelte';
 	import PageTitle from '$lib/components/page_title.svelte';
 
@@ -16,7 +15,7 @@
 
 	setContext('user', user);
 
-	// Mapping of route paths to custom page names
+
 	const pageTitles = {
 		'/': 'Pågående aktiviteter',
 		'/create-activity': 'Skapa aktivitet',
@@ -97,6 +96,20 @@
 		}
 	}
 
+	:global(.button-link) {
+		background: none;
+		border: none;
+		color: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+		font: inherit;
+		padding: 0;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
 	:global(.stop-scroll) {
 		overflow-y: hidden;
 	}
@@ -106,6 +119,21 @@
 		background: $clr-card-bg;
 		margin: 2rem 0;
 		padding: 1.5rem 1.875rem;
+	}
+	
+
+	:global(.card *::-webkit-scrollbar) {
+		width: 8px;
+	}
+
+	:global(.card *::-webkit-scrollbar-track) {
+		background-color: $knowit-off-white;
+		border-radius: 4px;
+	}
+
+	:global(.card *::-webkit-scrollbar-thumb) {
+		background-color: $knowit-green; 
+		border-radius: 4px;
 	}
 
 	header,
