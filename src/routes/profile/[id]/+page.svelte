@@ -32,5 +32,9 @@
 		&-icon {
 			margin-bottom: 0.5rem;
 		}
+
+		h2 {
+			@include text-lg;
+		}
 	}
 </style>
