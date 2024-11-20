@@ -44,7 +44,7 @@
 		transform: translateX(-50%);
 		width: 100%;
 		max-width: $media-sm;
-		z-index: 1000;
+		z-index: 99;
 
 		.nav-list {
 			list-style: none;
