@@ -16,13 +16,7 @@
 	export let description: string;
 	export let users: App.InputValue[];
 	export let selectedUsers: string[];
-	export let formType: string;
 	export let formError: string;
-
-	function cancelEdit() {
-		
-		//close modal
-	}
 
 	const user = getContext<Writable<App.User>>('user');
 
@@ -77,8 +71,6 @@
 	onMount(generateDates);
 </script>
 
-<div class="card">
-
 
 <form action="" method="POST">
 	<Input label="Namn på aktivitet" id="name" type="text" name="name" value={nameValue} />
@@ -111,25 +103,14 @@
 	/>
 
 	<div class="actions">
-		<Button type="submit" label="Spara aktivitet" buttonClass="button primary" />
-		{#if formType === 'create'}
-			<a href="/">Avbryt</a><!-- TODO: Add back button -->
-		{:else}
-			<Button
-				type="button"
-				label="Avbryt"
-				buttonClass="button secondary"
-				preventDefault={true}
-				on:click={cancelEdit}
-			/>
-		{/if}
+		<Button type="submit" label="Spara aktivitet" buttonClass="primary" />
+		<slot/>
 	</div>
 </form>
 
 {#if formError}
 	<p class="error">{formError}</p>
 {/if}
-</div>
 <style lang="scss">
 	form {
 		display: grid;
