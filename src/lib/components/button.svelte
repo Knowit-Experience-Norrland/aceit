@@ -18,6 +18,15 @@
 	}
 </script>
 
+<button
+	type={type}
+	on:click={handleClick}
+	class={buttonClass}
+	disabled={disabled}
+>
+	{label}
+</button>
+
 <style lang="scss">
 	.button {
 		display: inline-block;
@@ -53,11 +62,3 @@
 	}
 </style>
 
-<button
-	type={type}
-	on:click={handleClick}
-	class={buttonClass}
-	disabled={disabled}
->
-	{label}
-</button>

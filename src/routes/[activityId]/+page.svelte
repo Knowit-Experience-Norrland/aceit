@@ -5,6 +5,7 @@
 	import { sortUsers } from '$lib/sort';
 	import ActivityForm from '$lib/components/activity_form.svelte';
 	import Button from '$lib/components/button.svelte';
+	import Tag from '$lib/components/tag.svelte';
 
 	export let data: PageServerData;
 	export let form: ActionData;
@@ -64,7 +65,7 @@
 <h2>{activityName}</h2>
 
 {#if !editMode}
-	<p>Aktivitet: {activityKind}</p>
+	<Tag label={activityKind}/>
 	<p>Antal omgångar: {holes}</p>
 	<p>Beskrivning: {description}</p>
 {:else}

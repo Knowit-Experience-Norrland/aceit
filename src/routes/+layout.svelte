@@ -71,7 +71,7 @@
 	}
 
 	:global(h2) {
-		@include text-md;
+		@include text-lg;
 	}
 
 	:global(a) {
