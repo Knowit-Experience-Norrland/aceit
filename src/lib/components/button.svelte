@@ -3,7 +3,7 @@
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let disabled: boolean = false;
 	export let buttonClass: string = 'primary';
-	export let ariaLabel: string = ''
+	export let ariaLabel: string | undefined = undefined;
 	export let onClick: () => void  = () => {};
 
 </script>
