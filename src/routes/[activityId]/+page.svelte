@@ -9,7 +9,7 @@
 	import IconEdit from '$lib/components/icon_edit.svelte';
 	import IconPlus from '$lib/components/icon_plus.svelte';
 	import IconMinus from '$lib/components/icon_minus.svelte';
-
+	import Tag from '$lib/components/tag.svelte';
 
 	export let data: PageServerData;
 	export let form: ActionData;
@@ -75,7 +75,7 @@
 </Button>
 {/if}
 
-	<p>Aktivitet: {activityKind}</p>
+	<Tag label={activityKind}/>
 	<p>Antal omgångar: {holes}</p>
 	<p>Beskrivning: {description}</p>
 </div>
