@@ -5,6 +5,10 @@
 	import { sortUsers } from '$lib/sort';
 	import ActivityForm from '$lib/components/activity_form.svelte';
 	import Button from '$lib/components/button.svelte';
+	import Modal from '$lib/components/modal.svelte';
+	import IconEdit from '$lib/components/icon_edit.svelte';
+	import IconPlus from '$lib/components/icon_plus.svelte';
+	import IconMinus from '$lib/components/icon_minus.svelte';
 	import Tag from '$lib/components/tag.svelte';
 
 	export let data: PageServerData;
@@ -17,7 +21,7 @@
 		label: `${user.firstName} ${user.lastName}`
 	})), data.activity.admin);
 
-	let editMode = false;
+	let showModal = false;
 	const isAdmin = data.activity.admin === $user?.id;
 	let activityName = data.activity.name;
 	let activityKind = data.activity.kind;
@@ -36,11 +40,11 @@
 	$: isMember = members.some((member) => member.id === $user.id);
 
 	if (form?.error) {
-		editMode = true;
+		showModal = true;
 	}
 
-	function toggleEditMode() {
-		editMode = !editMode;
+	function toggleModal() {
+		showModal = !showModal
 	}
 
 	async function setActivityMember(action: string) {
@@ -62,37 +66,52 @@
 	}
 </script>
 
-<h2>{activityName}</h2>
+<div class="card">
 
-{#if !editMode}
+<h2>{activityName}</h2>
+{#if isAdmin && showModal == false}
+<Button buttonClass="icon" onClick={toggleModal} ariaLabel='Close'>
+	<IconEdit fill="white"/>
+</Button>
+{/if}
+
 	<Tag label={activityKind}/>
 	<p>Antal omgångar: {holes}</p>
 	<p>Beskrivning: {description}</p>
-{:else}
+</div>
+<Modal bind:show={showModal}>
 	<ActivityForm
 		nameValue={form?.name || activityName}
 		gameType={form?.gameType || 'days'}
-		{selectedDates}
-		{holes}
+		selectedDates={selectedDates}
+		holes={holes}
 		description={form?.description || description || ''}
-		{users}
-		{selectedUsers}
-		formType="edit"
+		users={users}
+		selectedUsers={selectedUsers}
 		formError={form?.error || ''}
-	/>
-{/if}
-
-{#if isAdmin && !editMode}
-	<Button type="button" label="Redigera" buttonClass="button primary" on:click={toggleEditMode} />
-{/if}
+	>
+		<Button
+			type="button"
+			label="Avbryt"
+			buttonClass="secondary"
+			onClick={toggleModal}
+		/>
+	</ActivityForm>
+</Modal> 
 
 {#if !isAdmin}
 	<Button
 		type="button"
-		label={isMember ? 'Lämna tävling' : 'Gå med i tävling'}
-		buttonClass="button primary"
-		on:click={() => {
+		label={isMember ? 'Gå ur tävling' : 'Gå med i tävling'}
+		buttonClass="text-icon"
+		onClick={() => {
 			setActivityMember(isMember ? 'leave' : 'join');
 		}}
-	/>
+	>
+		{#if isMember}
+			<IconMinus fill="white" width="24" height="24"/>
+		{:else}
+			<IconPlus fill="white" width="24" height="24"/>
+		{/if}
+	</Button>
 {/if}

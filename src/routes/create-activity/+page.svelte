@@ -22,15 +22,35 @@
 	let selectedDates: Date[] = form?.dates ? form.dates.map((date) => new Date(date)) : [];
 
 </script>
+<div class="card">
+	<ActivityForm
+		nameValue={form?.name || ''}
+		gameType={form?.gameType || 'days'}
+		holes={holes}
+		selectedDates={selectedDates}
+		description={form?.description || ''}
+		users={users}
+		selectedUsers={selectedUsers}
+		formError={form?.error || ''}
+	>
+		<a href="/" class="abortLink">Avbryt</a> 
+	</ActivityForm>
+</div>
 
-<ActivityForm
-	nameValue={form?.name || ''}
-	gameType={form?.gameType || 'days'}
-	holes={holes}
-	selectedDates={selectedDates}
-	description={form?.description || ''}
-	users={users}
-	selectedUsers={selectedUsers}
-	formType='create'
-	formError={form?.error || ''}
-/>
+<style lang="scss">
+	.abortLink {
+		display: inline-block;
+		@include text-base-sb;
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		cursor: pointer;
+		transition: background-color 0.2s;
+		background-color: transparent;
+		border: 0.5px solid $clr-text;
+		text-decoration: none;
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.08)
+		}
+	}
+</style>
