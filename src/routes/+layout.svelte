@@ -74,6 +74,11 @@
 		@include text-lg;
 	}
 
+	:global(input) {
+		@include text-base;
+		line-height: 1rem;
+	}
+
 	:global(a) {
 		@include text-md;
 		color: $clr-text;

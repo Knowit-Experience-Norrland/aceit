@@ -85,7 +85,7 @@
 		<DatePicker bind:selectedDates />
 		<input type="hidden" name="holes" value={holes} />
 	{:else}
-		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} />
+		<Input label="Antal hål" id="holes_input" name="holes" type="number" bind:value={holes} inputClass="buttons small-input"/>
 	{/if}
 		<Textarea label="Beskrivning" id="description_input" name="description" value={description} />
 
@@ -115,10 +115,6 @@
 	form {
 		display: grid;
 		gap: 2rem;
-	}
-
-	input {
-		padding: 0.5rem;
 	}
 
 	.actions {
